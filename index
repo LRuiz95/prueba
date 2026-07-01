@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ciclo de Vida Institucional del Estudiante UTE</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js">
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                        ui: {
+                            bg: '#f8fafc',
+                            card: '#ffffff',
+                            border: '#e2e8f0',
+                            textMain: '#1e293b',
+                            textMuted: '#64748b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            letter-spacing: -0.01em;
+        }
+        .glass-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.25rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.01);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: #fdba74;
+            box-shadow: 0 10px 15px -3px rgba(251, 146, 60, 0.08);
+        }
+        .pulse-dot {
+            animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(249, 115, 22, 0);
+            }
+        }
+        .fade-in {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .tab-active {
+            background-color: #ffedd5 !important;
+            border-color: #f97316 !important;
+            color: #c2410c !important;
+        }
+        .tab-active i {
+            color: #ea580c !important;
+        }
+        .tab-active span.font-mono {
+            color: #f97316 !important;
+        }
+        .field-tag {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #0f172a;
+            transition: all 0.15s;
+        }
+        .field-tag:hover {
+            background: #ffedd5;
+            border-color: #fdba74;
+            color: #9a3412;
+        }
+        .accordion-header {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .accordion-header:hover {
+            background: #fef9c3;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 800px;
+            transition: max-height 0.4s ease-in;
+        }
+        .viewport {
+            cursor: grab;
+            touch-action: none;
+        }
+        .viewport:active {
+            cursor: grabbing;
+        }
+        .mermaid-wrapper {
+            transform-origin: 0 0;
+            transition: transform 0.05s linear;
+            width: fit-content;
+            min-width: 100%;
+        }
+        .mermaid {
+            background: white;
+            margin: 0;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+        .diagram-container {
+            overflow: hidden;
+        }
+        .badge-dep {
+            display: inline-block;
+            background: #f1f5f9;
+            border-radius: 999px;
+            padding: 0.1rem 0.6rem;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+        }
+        .badge-dep:hover {
+            background: #ffedd5;
+            border-color: #fdba74;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .status-validado {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+        .status-parcial {
+            background: #fef9c3;
+            color: #854d0e;
+            border: 1px solid #fde047;
+        }
+        .status-pendiente {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        .risk-critical {
+            border-left: 4px solid #ef4444;
+        }
+        .risk-high {
+            border-left: 4px solid #f97316;
+        }
+        .risk-medium {
+            border-left: 4px solid #eab308;
+        }
+        .risk-low {
+            border-left: 4px solid #94a3b8;
+        }
+        /* Ajustes para que el texto del diagrama sea más grande */
+        .mermaid .label {
+            font-size: 14px !important;
+            font-weight: 500;
+        }
+        .mermaid .nodeLabel {
+            font-size: 14px !important;
+        }
+        .mermaid .edgeLabel {
+            font-size: 12px !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased font-sans text-ui-textMain">
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-ui-border">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-brand-500 flex items-center justify-center shadow-md shadow-brand-500/20">
+                    <i class="fa-solid fa-graduation-cap text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-extrabold tracking-tighter text-slate-950 leading-tight">
+                        Ecosistema Institucional del Estudiante <span class="text-brand-600">UTE</span>
+                    </h1>
+                    <p class="text-[11px] text-ui-textMuted flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-brand-500 pulse-dot inline-block"></span>
+                        Modelo integrado TSU → Lic./Ing. · 9 fases · 5 modalidades · 218 campos · 8 departamentos propietarios
+                        <span class="ml-2 text-[9px] bg-slate-100 px-2 py-0.5 rounded-full text-slate-600 font-medium">v3.0 · Jun 2026</span>
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-[10px] text-ui-textMuted bg-slate-50 px-3 py-1.5 rounded-full border border-ui-border">
+                <i class="fa-regular fa-file-lines text-brand-500"></i>
+                <span>Reporte técnico integrado</span>
+                <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                <span>218 campos · 12 deptos.</span>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
+
+        <!-- MAPA VISUAL -->
+        <section class="glass-card p-5 md:p-6">
+            <div class="flex items-center gap-3 mb-5 border-b border-ui-border pb-4">
+                <span class="w-9 h-9 rounded-xl bg-brand-100 flex items-center justify-center">
+                    <i class="fa-solid fa-sitemap text-brand-600 text-base"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-950">Mapa visual del ciclo de vida institucional</h2>
+                    <p class="text-xs text-ui-textMuted">Flujo institucional desde el registro inicial del interesado hasta el seguimiento de egresados TSU y Lic./Ing.</p>
+                </div>
+            </div>
+            <div class="diagram-container" style="border:1px solid #e2e8f0; border-radius:0.75rem; background:#f8fafc; overflow:hidden;">
+                <div class="toolbar" style="display:flex; align-items:center; gap:8px; padding:8px 12px; background:white; border-bottom:1px solid #e2e8f0; flex-wrap:wrap;">
+                    <div style="display:flex; align-items:center; gap:2px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; padding:2px;">
+                        <button class="zoom-in" style="width:30px; height:28px; border:none; background:none; cursor:pointer; border-radius:6px; font-size:18px; font-weight:bold; color:#475569;">+</button>
+                        <span class="zoom-level" style="font-size:10px; font-family:monospace; min-width:45px; text-align:center;">100%</span>
+                        <button class="zoom-out" style="width:30px; height:28px; border:none; background:none; cursor:pointer; border-radius:6px; font-size:18px; font-weight:bold; color:#475569;">−</button>
+                    </div>
+                    <button class="fit-view" style="height:30px; padding:0 12px; border:1px solid #e2e8f0; background:white; border-radius:8px; font-size:11px; font-weight:500; cursor:pointer;">⟳ Ajustar vista</button>
+                    <button class="reset-view" style="height:30px; padding:0 12px; border:1px solid #e2e8f0; background:white; border-radius:8px; font-size:11px; font-weight:500; cursor:pointer;">Restablecer</button>
+                    <div style="margin-left:auto; display:flex; align-items:center; gap:10px; font-size:9px; color:#64748b;">
+                        <span>🖱️ Arrastra · Rueda zoom</span>
+                    </div>
+                </div>
+                <div class="viewport" style="position:relative; height:700px; overflow:hidden; cursor:grab; background:#f8fafc;" id="mermaid-viewport">
+                    <div class="mermaid-wrapper" style="transform-origin: 0 0;">
+                        <pre class="mermaid">
+                            flowchart TD
+                                classDef ingreso fill:#fff7ed,stroke:#fb923c,stroke-width:2px,color:#7c2d12;
+                                classDef tsu fill:#f0f9ff,stroke:#38bdf8,stroke-width:2px,color:#075985;
+                                classDef estadia fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#065f46;
+                                classDef titulacion fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#92400e;
+                                classDef superior fill:#f5f3ff,stroke:#8b5cf6,stroke-width:2px,color:#4c1d95;
+                                classDef egresado fill:#f0fdfa,stroke:#14b8a6,stroke-width:2px,color:#0f766e;
+                                classDef baja fill:#fef2f2,stroke:#ef4444,stroke-width:2px,color:#991b1b;
+                                classDef decision fill:#ffffff,stroke:#64748b,stroke-width:2px,color:#0f172a;
+
+                                A["FASE 1<br><b>Interesado</b><br/>Captación, difusión y registro inicial"]:::ingreso
+                                B["FASE 2<br><b>Aspirante</b><br/>Registro formal, expediente y examen de admisión"]:::ingreso
+                                C{"¿Admitido?"}:::decision
+
+                                A --> B
+                                B --> C
+
+                                C -->|No acreditado| Z1["Fin del proceso<br/>Prospecto no admitido"]:::baja
+                                C -->|Baja académica o personal| Z2["Baja previa a inscripción<br/>Retiro voluntario o administrativo"]:::baja
+
+                                C -->|Admitido| D["FASE 3<br><b>Alumno TSU</b><br/>Matrícula, carrera, grupo, turno y modalidad"]:::tsu
+
+                                D --> D1{"Plan TSU"}:::decision
+                                D1 -->|Nuevo Modelo Educativo| D2["TSU NME<br/>Ordinario · Revaluación · Especial"]:::tsu
+                                D1 -->|Plan en liquidación| D3["TSU en liquidación<br/>Ordinario · Revaluación"]:::tsu
+
+                                D2 --> E["Ciclo académico TSU<br/>Inscripción · Clases · Evaluación · Reinscripción"]:::tsu
+                                D3 --> E
+
+                                E --> E1{"Resultado académico TSU"}:::decision
+                                E1 -->|Aprobado| E2["Reinscripción<br/>al siguiente cuatrimestre"]:::tsu
+                                E2 --> E
+
+                                E1 -->|Créditos completos| F["FASE 4<br><b>Estadía práctica TSU</b><br/>Proyecto técnico en empresa"]:::estadia
+
+                                E1 -->|Reprobación definitiva| Z3["Baja TSU<br/>Causa académica"]:::baja
+                                E1 -->|Baja personal, financiera o administrativa| Z4["Baja TSU<br/>Temporal o definitiva"]:::baja
+
+                                F --> F1["Registro de proyecto TSU<br/>Empresa · Asesor empresarial · Asesor académico"]:::estadia
+                                F1 --> F2["Desarrollo de bitácoras<br/>Evidencias y seguimiento"]:::estadia
+                                F2 --> F3["Entrega de memoria técnica<br/>Revisión y correcciones"]:::estadia
+                                F3 --> F4{"¿Estadía TSU liberada?"}:::decision
+
+                                F4 -->|No| F5["Regularización de estadía TSU<br/>Corrección de evidencias o recursamiento"]:::estadia
+                                F5 --> F2
+
+                                F4 -->|Sí| G["FASE 5<br><b>Titulación TSU</b><br/>Título y cédula profesional TSU"]:::titulacion
+
+                                G --> G1["Revisión integral<br/>del expediente TSU"]:::titulacion
+                                G1 --> G2["Registro ante DGP-SEP<br/>Folio, título y cédula TSU"]:::titulacion
+                                G2 --> H{"¿Continúa a Lic./Ing.?"}:::decision
+
+                                H -->|No| I["<b>Egresado TSU</b><br/>Inserción laboral, bolsa de trabajo o educación continua"]:::egresado
+                                I --> S["FASE 9<br><b>Seguimiento de egresados</b><br/>TSU y Lic./Ing."]:::egresado
+
+                                H -->|Sí| J["FASE 6<br><b>Alumno Lic./Ing.</b><br/>Continuidad con cédula TSU"]:::superior
+
+                                J --> J1{"Plan superior"}:::decision
+                                J1 -->|Nuevo Modelo Educativo| J2["Lic./Ing. NME<br/>Ordinario · Revaluación · Especial"]:::superior
+                                J1 -->|Plan en liquidación| J3["Lic./Ing. en liquidación<br/>Ordinario · Revaluación"]:::superior
+
+                                J2 --> K["Ciclo académico Lic./Ing.<br/>Inscripción · Clases · Evaluación · Reinscripción"]:::superior
+                                J3 --> K
+
+                                K --> K1{"Resultado académico Lic./Ing."}:::decision
+                                K1 -->|Aprobado| K2["Reinscripción<br/>al siguiente cuatrimestre"]:::superior
+                                K2 --> K
+
+                                K1 -->|5 cuatrimestres completos| L["FASE 7<br><b>Estadía profesional superior</b><br/>Proyecto profesional en empresa"]:::estadia
+
+                                K1 -->|Reprobación definitiva| Z5["Baja Lic./Ing.<br/>Causa académica"]:::baja
+                                K1 -->|Baja personal, financiera o administrativa| Z6["Baja Lic./Ing.<br/>Temporal o definitiva"]:::baja
+
+                                L --> L1["Registro de proyecto superior<br/>Empresa · Asesor empresarial · Asesor académico"]:::estadia
+                                L1 --> L2["Bitácoras y evidencias avanzadas<br/>Seguimiento académico y empresarial"]:::estadia
+                                L2 --> L3["Entrega de memoria de grado<br/>Revisión académica"]:::estadia
+                                L3 --> L4{"¿Estadía superior liberada?"}:::decision
+
+                                L4 -->|No| L5["Regularización de estadía superior<br/>Corrección o recursamiento"]:::estadia
+                                L5 --> L2
+
+                                L4 -->|Sí| M["FASE 8<br><b>Titulación Lic./Ing.</b><br/>Título y cédula profesional"]:::titulacion
+
+                                M --> M1["Revisión integral<br/>del expediente Lic./Ing."]:::titulacion
+                                M1 --> M2["Registro ante DGP-SEP<br/>Folio, título y cédula profesional"]:::titulacion
+                                M2 --> N["<b>Egresado Lic./Ing.</b><br/>Licenciado o Ingeniero"]:::egresado
+                                N --> S
+
+                                S --> S1["Bolsa de Trabajo UTGE<br/>Vacantes, referidos y vinculación laboral"]:::egresado
+                                S --> S2["Encuestas de empleabilidad<br/>Actualización de trayectoria profesional"]:::egresado
+                                S --> S3["Encuestas a empleadores<br/>Pertinencia del perfil de egreso"]:::egresado
+                                S --> S4["Educación continua<br/>Diplomados · Cursos · Posgrados"]:::egresado
+                                S --> S5["Indicadores MIR y KPI institucionales<br/>Egreso, titulación y empleabilidad"]:::egresado
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILA SUPERIOR: Fases + Modalidades + Requisitos -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <aside class="lg:col-span-4 flex flex-col gap-5">
+                <!-- Fases -->
+                <div class="glass-card p-4">
+                    <h3 class="text-sm font-bold text-slate-950 mb-3.5 flex items-center gap-2.5">
+                        <i class="fa-solid fa-layer-group text-brand-500"></i>
+                        Fases del ciclo de vida
+                    </h3>
+                    <nav id="phase-tabs" class="flex flex-col gap-1.5"></nav>
+                </div>
+                <!-- Modalidades -->
+                <div class="glass-card p-4 border-l-4 border-l-brand-400">
+                    <h3 class="text-sm font-bold text-slate-950 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-clock text-brand-500"></i>
+                        Modalidades académicas
+                    </h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="showModality('TRADICIONAL')" class="mod-btn text-left p-2.5 bg-slate-50 border border-ui-border rounded-xl transition-all" data-mod="TRADICIONAL">
+                            <span class="block font-semibold text-xs text-slate-900">Tradicional</span>
+                            <span class="text-[10px] text-ui-textMuted">Presencial · 6 cuatrim.</span>
+                        </button>
+                        <button onclick="showModality('BIS')" class="mod-btn text-left p-2.5 bg-slate-50 border border-ui-border rounded-xl transition-all" data-mod="BIS">
+                            <span class="block font-semibold text-xs text-slate-900">Bilingüe BIS</span>
+                            <span class="text-[10px] text-ui-textMuted">Inglés · 7 cuatrim.</span>
+                        </button>
+                        <button onclick="showModality('DESPRESURIZADA')" class="mod-btn text-left p-2.5 bg-slate-50 border border-ui-border rounded-xl transition-all" data-mod="DESPRESURIZADA">
+                            <span class="block font-semibold text-xs text-slate-900">Despresurizado</span>
+                            <span class="text-[10px] text-ui-textMuted">Flexible · 8 cuatrim.</span>
+                        </button>
+                        <button onclick="showModality('MIXTA')" class="mod-btn text-left p-2.5 bg-slate-50 border border-ui-border rounded-xl transition-all" data-mod="MIXTA">
+                            <span class="block font-semibold text-xs text-slate-900">Mixto híbrido</span>
+                            <span class="text-[10px] text-ui-textMuted">Híbrido · 6 cuatrim.</span>
+                        </button>
+                        <button onclick="showModality('DUAL')" class="mod-btn text-left p-2.5 bg-slate-50 border border-ui-border rounded-xl transition-all col-span-2" data-mod="DUAL">
+                            <span class="block font-semibold text-xs text-slate-900">Modelo dual</span>
+                            <span class="text-[10px] text-ui-textMuted">Vinculación laboral activa con empresa</span>
+                        </button>
+                    </div>
+                    <div id="modality-info" class="mt-3 p-3 bg-slate-50 rounded-xl border border-ui-border text-xs text-ui-textMain min-h-[60px]"></div>
+                    <!-- Nota Dual del reporte -->
+                    <div class="mt-2 text-[10px] text-amber-700 bg-amber-50 p-2 rounded-lg border border-amber-200 flex items-start gap-1.5">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
+                        <span><strong>Dual:</strong> Exclusiva TSU · Sin departamento independiente — campos distribuidos entre Escolares y Vinculación.</span>
+                    </div>
+                </div>
+                <!-- Requisitos -->
+                <div class="glass-card p-4 border-l-4 border-l-sky-400 bg-sky-50/50">
+                    <h3 class="text-sm font-bold text-sky-950 mb-2.5 flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check text-sky-600"></i>
+                        Requisitos de inscripción
+                    </h3>
+                    <ul class="text-[11px] space-y-1.5 text-sky-900 list-inside list-disc">
+                        <li>Certificado de bachillerato original o kardex completo.</li>
+                        <li>CURP impresa en formato reciente.</li>
+                        <li>4 fotografías tamaño infantil en blanco y negro.</li>
+                        <li>Comprobante de domicilio con antigüedad no mayor a 3 meses.</li>
+                        <li>Certificado médico oficial.</li>
+                        <li class="border-t border-sky-200 pt-1.5 mt-1 font-medium text-sky-700 list-none">
+                            <i class="fa-solid fa-arrow-right text-xs mr-1"></i>
+                            Para continuidad: cédula TSU y liberación de estadía.
+                        </li>
+                    </ul>
+                    <!-- Estructura financiera del reporte -->
+                    <div class="mt-3 pt-3 border-t border-sky-200 grid grid-cols-2 gap-2 text-[10px]">
+                        <div class="bg-white/70 p-2 rounded-lg">
+                            <p class="font-bold text-slate-800">TSU</p>
+                            <p>Insc. $560 · Mens. $560 · Reins. $300</p>
+                        </div>
+                        <div class="bg-white/70 p-2 rounded-lg">
+                            <p class="font-bold text-slate-800">Lic./Ing.</p>
+                            <p>Insc. $800 · Mens. $800 · Reins. $400</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- COLUMNA DERECHA: Detalle de fase + Bajas -->
+            <section class="lg:col-span-8 flex flex-col gap-6">
+                <div id="phase-detail-viewer" class="glass-card p-5 md:p-6 min-h-[400px] fade-in"></div>
+                <div class="glass-card p-5">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4.5 border-b border-ui-border pb-4">
+                        <h3 class="text-sm font-bold text-slate-950 flex items-center gap-2.5">
+                            <i class="fa-solid fa-user-slash text-red-500"></i>
+                            Catálogo institucional de causas de baja
+                            <span class="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">23 motivos</span>
+                        </h3>
+                        <select id="baja-category-filter" onchange="renderBajas()" class="bg-white border border-ui-border text-xs rounded-lg px-3 py-1.5 text-ui-textMain focus:outline-none focus:border-red-300 focus:ring-1 focus:ring-red-100 transition-all cursor-pointer">
+                            <option value="todos">Todas las categorías</option>
+                            <option value="Socioemocional">Socioemocional</option>
+                            <option value="Económico-laboral">Económico-laboral</option>
+                            <option value="Académico">Académico</option>
+                            <option value="Geográfico">Geográfico</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                    </div>
+                    <div id="bajas-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[300px] overflow-y-auto pr-2"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SEDES -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 pt-4">
+            <div class="glass-card p-4 text-center flex flex-col items-center gap-2.5 border-t-2 border-t-brand-300">
+                <i class="fa-solid fa-building-columns text-2xl text-brand-500"></i>
+                <span class="text-xs font-semibold text-slate-900 leading-tight">Sede central<br>Gral. Escobedo</span>
+            </div>
+            <div class="glass-card p-4 text-center flex flex-col items-center gap-2.5 bg-slate-50/50">
+                <i class="fa-solid fa-location-dot text-2xl text-slate-400"></i>
+                <span class="text-xs font-medium text-ui-textMain">Extensión<br>Sabinas Hidalgo</span>
+            </div>
+            <div class="glass-card p-4 text-center flex flex-col items-center gap-2.5 bg-slate-50/50">
+                <i class="fa-solid fa-location-dot text-2xl text-slate-400"></i>
+                <span class="text-xs font-medium text-ui-textMain">Extensión<br>Agualeguas</span>
+            </div>
+            <div class="glass-card p-4 text-center flex flex-col items-center gap-2.5 bg-slate-50/50">
+                <i class="fa-solid fa-location-dot text-2xl text-slate-400"></i>
+                <span class="text-xs font-medium text-ui-textMain">Extensión<br>Anáhuac</span>
+            </div>
+            <div class="glass-card p-4 text-center flex flex-col items-center gap-2.5 bg-slate-50/50">
+                <i class="fa-solid fa-location-dot text-2xl text-slate-400"></i>
+                <span class="text-xs font-medium text-ui-textMain">Extensión<br>Cerralvo</span>
+            </div>
+        </div>
+
+        <!-- KPI RÁPIDOS -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="glass-card p-4 text-center border-t-4 border-t-brand-500">
+                <p class="text-3xl font-extrabold text-brand-600">218</p>
+                <p class="text-xs font-semibold text-slate-700 mt-1">Campos totales</p>
+                <p class="text-[10px] text-ui-textMuted">Diccionario maestro</p>
+            </div>
+            <div class="glass-card p-4 text-center border-t-4 border-t-sky-500">
+                <p class="text-3xl font-extrabold text-sky-600">12+</p>
+                <p class="text-xs font-semibold text-slate-700 mt-1">Áreas evaluadas</p>
+                <p class="text-[10px] text-ui-textMuted">Diagnóstico institucional</p>
+            </div>
+            <div class="glass-card p-4 text-center border-t-4 border-t-amber-500">
+                <p class="text-3xl font-extrabold text-amber-600">59</p>
+                <p class="text-xs font-semibold text-slate-700 mt-1">Campos especializados</p>
+                <p class="text-[10px] text-ui-textMuted">Titulación superior</p>
+            </div>
+            <div class="glass-card p-4 text-center border-t-4 border-t-red-500">
+                <p class="text-3xl font-extrabold text-red-600">~50%</p>
+                <p class="text-xs font-semibold text-slate-700 mt-1">Carga en Escolares</p>
+                <p class="text-[10px] text-ui-textMuted">Incluye deportes y talleres</p>
+            </div>
+        </div>
+
+        <!-- VALIDACIONES POR DEPARTAMENTO (NUEVO) -->
+        <section class="glass-card p-5 md:p-6 border-t-4 border-t-indigo-500">
+            <div class="flex items-center gap-3 mb-5 border-b border-ui-border pb-4">
+                <span class="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center">
+                    <i class="fa-solid fa-check-double text-indigo-600 text-base"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-950">Estado de validaciones por departamento</h2>
+                    <p class="text-xs text-ui-textMuted">Participación en las 3 etapas del proceso de consulta · Junio 2026</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-[11px] border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-ui-border">
+                            <th class="p-2 text-left font-semibold text-slate-700">Departamento</th>
+                            <th class="p-2 text-left font-semibold text-slate-700">Persona entrevistada</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Etapa 1</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Etapa 2</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Etapa 3</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Estatus</th>
+                            <th class="p-2 text-left font-semibold text-slate-700">Observación</th>
+                        </tr>
+                    </thead>
+                    <tbody id="validaciones-body"></tbody>
+                </table>
+            </div>
+            <div class="text-[10px] text-slate-400 mt-3 flex flex-wrap gap-3 items-center">
+                <span><span class="status-badge status-validado">VALIDADO</span> Confirmación explícita</span>
+                <span><span class="status-badge status-parcial">PARCIAL</span> Información entregada sin confirmación final</span>
+                <span><span class="status-badge status-pendiente">PENDIENTE</span> Sin evidencia de entrega</span>
+                <span class="ml-auto text-[9px]">* EEBT = Estadías, Egresados y Bolsa de Trabajo</span>
+            </div>
+        </section>
+
+        <!-- DICCIONARIO MAESTRO POR PROPIETARIO -->
+        <div class="glass-card overflow-hidden">
+            <div class="bg-slate-50 px-6 py-4 border-b border-ui-border">
+                <div class="flex items-center gap-3">
+                    <span class="w-9 h-9 rounded-xl bg-violet-100 flex items-center justify-center">
+                        <i class="fa-solid fa-diagram-project text-violet-600 text-base"></i>
+                    </span>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-950">Campos maestros <span class="text-brand-600">por propietario</span></h2>
+                        <p class="text-xs text-ui-textMuted">218 campos consolidados · Dueño de la información · Diccionario maestro institucional UTE</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 border-b border-ui-border">
+                <div class="glass-card p-4 text-center border-t-4 border-t-brand-500 bg-white">
+                    <p class="text-2xl font-black text-brand-600">218</p>
+                    <p class="text-xs font-semibold text-slate-700">Campos totales</p>
+                </div>
+                <div class="glass-card p-4 text-center border-t-4 border-t-violet-500 bg-white">
+                    <p class="text-2xl font-black text-violet-600" id="total-depts">0</p>
+                    <p class="text-xs font-semibold text-slate-700">Departamentos propietarios</p>
+                </div>
+                <div class="glass-card p-4 text-center border-t-4 border-t-emerald-500 bg-white">
+                    <p class="text-2xl font-black text-emerald-600" id="max-dept">-</p>
+                    <p class="text-xs font-semibold text-slate-700">Mayor concentración</p>
+                </div>
+                <div class="glass-card p-4 text-center border-t-4 border-t-amber-500 bg-white">
+                    <p class="text-2xl font-black text-amber-600" id="exclusive-count">0</p>
+                    <p class="text-xs font-semibold text-slate-700">Dueños con campo único</p>
+                </div>
+            </div>
+            <div id="accordion-container" class="divide-y divide-ui-border"></div>
+            <div class="text-[11px] text-slate-400 bg-slate-50 p-3 border-t border-ui-border text-center">
+                <i class="fa-regular fa-rectangle-list mr-1"></i>
+                El departamento propietario es responsable de la captura, mantenimiento y veracidad del dato.
+            </div>
+        </div>
+
+        <!-- HALLAZGOS CRÍTICOS (ENRIQUECIDOS) -->
+        <section class="glass-card p-5 md:p-6 border-t-4 border-t-red-500">
+            <div class="flex items-center gap-3 mb-5 border-b border-ui-border pb-4">
+                <span class="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center">
+                    <i class="fa-solid fa-triangle-exclamation text-red-600 text-base"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-950">Hallazgos críticos del diagnóstico de uso de datos</h2>
+                    <p class="text-xs text-ui-textMuted">Desconexiones estructurales, riesgos operativos y cuellos de botella detectados.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3" id="hallazgos-grid"></div>
+        </section>
+
+        <!-- CAMPOS DE VERDAD INSTITUCIONALES -->
+        <section class="glass-card p-5 md:p-6 border-t-4 border-t-violet-500">
+            <div class="flex items-center gap-3 mb-5 border-b border-ui-border pb-4">
+                <span class="w-9 h-9 rounded-xl bg-violet-100 flex items-center justify-center">
+                    <i class="fa-solid fa-database text-violet-600 text-base"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-950">Campos institucionales</h2>
+                    <p class="text-xs text-ui-textMuted">Administrados por Servicios Escolares como base institucional para evitar duplicidad, inconsistencias y silos de información.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-2" id="campos-verdad-grid"></div>
+        </section>
+
+        <!-- DIAGNÓSTICO POR DEPARTAMENTO -->
+        <section class="glass-card p-5 md:p-6">
+            <div class="flex items-center gap-3 mb-5 border-b border-ui-border pb-4">
+                <span class="w-9 h-9 rounded-xl bg-sky-100 flex items-center justify-center">
+                    <i class="fa-solid fa-building-user text-sky-600 text-base"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-950">Diagnóstico de desempeño por departamento</h2>
+                    <p class="text-xs text-ui-textMuted">Interacciones, dependencias de datos y riesgos de operación institucional.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3" id="departamentos-grid"></div>
+        </section>
+
+        <!-- CARRERAS EN LIQUIDACIÓN / NME -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div class="glass-card p-5 border-t-4 border-t-amber-400">
+                <h3 class="text-sm font-bold text-amber-950 mb-3.5 flex items-center gap-2">
+                    <i class="fa-solid fa-building-circle-exclamation text-amber-600"></i>
+                    Carreras en liquidación histórica
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 max-h-[250px] overflow-y-auto text-[11px] pr-2">
+                    <span class="font-semibold text-amber-800 col-span-2 pt-1">Nivel TSU</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Mecatrónica, área Automatización</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Mantenimiento Industrial</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Desarrollo de Negocios, área Mercadotecnia</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Logística, área Cadena de Suministros</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Lengua Inglesa</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Química, área Tecnología Ambiental</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Nanotecnología, área Materiales</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">TI, área Desarrollo de Software Multiplataforma</span>
+                    <span class="font-semibold text-amber-800 col-span-2 pt-2">Nivel Licenciatura / Ingeniería</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Ingeniería en Mecatrónica</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Ingeniería en Mantenimiento Industrial</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Ingeniería en Desarrollo y Gestión de Software</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Ingeniería en Tecnología Ambiental</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Ingeniería en Nanotecnología</span>
+                    <span class="p-2 bg-amber-50 rounded-lg border border-amber-100 text-amber-900">Licenciatura en Innovación de Negocios y Mercadotecnia</span>
+                </div>
+            </div>
+            <div class="glass-card p-5 border-t-4 border-t-emerald-500">
+                <h3 class="text-sm font-bold text-emerald-950 mb-3.5 flex items-center gap-2">
+                    <i class="fa-solid fa-leaf text-emerald-600"></i>
+                    Nuevo Modelo Educativo
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 max-h-[250px] overflow-y-auto text-[11px] pr-2">
+                    <span class="font-semibold text-emerald-800 col-span-2 pt-1">Ingenierías y licenciaturas</span>
+                    <span class="p-2 bg-emerald-50 rounded-lg border border-emerald-100 text-emerald-900 font-medium">Licenciatura en Educación</span>
+                    <span class="p-2 bg-emerald-50 rounded-lg border border-emerald-100 text-emerald-900 font-medium">Ingeniería Ambiental y Sustentabilidad</span>
+                    <span class="p-2 bg-emerald-50 rounded-lg border border-emerald-100 text-emerald-900 font-medium">Ingeniería en Logística</span>
+                    <span class="p-2 bg-emerald-50 rounded-lg border border-emerald-100 text-emerald-900 font-medium">Ingeniería en Mantenimiento Industrial</span>
+                    <span class="p-2 bg-emerald-50 rounded-lg border border-emerald-100 text-emerald-900 font-medium">Licenciatura en Negocios y Mercadotecnia</span>
+                    <span class="p-2 bg-emerald-50 rounded-lg border border-emerald-100 text-emerald-900 font-medium">Ingeniería en Nanotecnología</span>
+                    <span class="p-2 bg-emerald-50 rounded-lg border border-emerald-100 text-emerald-900 font-medium">Ingeniería en TI e Innovación Digital</span>
+                    <span class="p-2 bg-emerald-50 rounded-lg border border-emerald-100 text-emerald-900 font-medium">Ingeniería en Mecatrónica</span>
+                    <span class="p-2 bg-emerald-50 rounded-lg border border-emerald-100 text-emerald-900 font-medium">Ingeniería Mecánica</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CRONOLOGÍA DEL PROCESO (NUEVO) -->
+        <section class="glass-card p-5 md:p-6 border-t-4 border-t-slate-500">
+            <div class="flex items-center gap-3 mb-5 border-b border-ui-border pb-4">
+                <span class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center">
+                    <i class="fa-solid fa-timeline text-slate-600 text-base"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-950">Cronología del proceso de consulta</h2>
+                    <p class="text-xs text-ui-textMuted">Tres etapas · Mayo — Junio 2026</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="border-l-4 border-brand-400 pl-4 py-1">
+                    <p class="text-xs font-bold text-brand-700">Etapa 1 · 20–28 de mayo</p>
+                    <p class="text-[11px] text-ui-textMain">Solicitud y recolección de matrices. Envío a 18 destinatarios. Plazo: 22 de mayo. Se recibieron respuestas de Escolares, EEBT, Programa Tutorial, Servicios Estudiantiles, Enfermería y Titulación (parcial).</p>
+                </div>
+                <div class="border-l-4 border-sky-400 pl-4 py-1">
+                    <p class="text-xs font-bold text-sky-700">Etapa 2 · 25 de mayo – primeros de junio</p>
+                    <p class="text-[11px] text-ui-textMain">Entrevistas directas con 12 departamentos aplicando guía estructurada de 4 bloques: fases, datos críticos, trámites y dependencias interdepartamentales.</p>
+                </div>
+                <div class="border-l-4 border-emerald-400 pl-4 py-1">
+                    <p class="text-xs font-bold text-emerald-700">Etapa 3 · 9–15 de junio</p>
+                    <p class="text-[11px] text-ui-textMain">Validación final del consolidado HTML+Excel. Plazo: 12 de junio 1:00 p.m. Escolares validó formalmente; EEBT entregó 36 campos adicionales. Departamentos sin respuesta asumen conformidad.</p>
+                </div>
+            </div>
+            <div class="mt-4 p-3 bg-slate-50 rounded-xl border border-ui-border text-[11px] text-ui-textMuted flex items-start gap-2">
+                <i class="fa-regular fa-clock text-slate-400 mt-0.5"></i>
+                <span><strong>Nota de responsabilidad:</strong> Conforme al correo del 9 de junio, los departamentos que no enviaron correcciones ni confirmación antes del plazo establecido asumen que la información consolidada es correcta. Cualquier omisión posterior recae en el área correspondiente.</span>
+            </div>
+        </section>
+
+        <!-- ACCIONES PENDIENTES Y PRÓXIMOS PASOS (MODIFICADO SEGÚN SOLICITUD) -->
+        <section class="glass-card p-5 md:p-6 border-t-4 border-t-amber-500">
+            <div class="flex items-center gap-3 mb-5 border-b border-ui-border pb-4">
+                <span class="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center">
+                    <i class="fa-solid fa-list-check text-amber-600 text-base"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-950">Acciones pendientes y próximos pasos</h2>
+                    <p class="text-xs text-ui-textMuted">Prioridades identificadas en el diagnóstico</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <!-- Críticas -->
+                <div class="p-4 bg-red-50 rounded-xl border border-red-200 risk-critical">
+                    <p class="text-xs font-bold text-red-800 flex items-center gap-2"><i class="fa-solid fa-circle-exclamation"></i> Críticas</p>
+                    <ul class="text-[11px] text-red-900 list-disc list-inside space-y-1 mt-1">
+                        <li>Realizar seguimiento formal a los departamentos que no entregaron datos (Difusión, Becas, Deportes y Dirección de Carrera).</li>
+                        <li>Definir al propietario oficial del campo <strong>"Nombre del Proyecto de Estadía"</strong> (resolver discrepancia entre Academia y Titulación).</li>
+                        <li>Documentar y formalizar los flujos exclusivos de la Coordinación Dual (colaboración con Lic. Karina Moreno).</li>
+                    </ul>
+                </div>
+                <!-- Alta -->
+                <div class="p-4 bg-orange-50 rounded-xl border border-orange-200 risk-high">
+                    <p class="text-xs font-bold text-orange-800 flex items-center gap-2"><i class="fa-solid fa-arrow-up"></i> Alta</p>
+                    <ul class="text-[11px] text-orange-900 list-disc list-inside space-y-1 mt-1">
+                        <li>Formalizar los subestatus de Estadía: <em>Buscando empresa · En proceso · Evaluado · Liberado</em>.</li>
+                        <li>Revisar y unificar los flujos operativos diferenciados entre la sede Escobedo y las extensiones.</li>
+                        <li><strong>✅ Logrado:</strong> Los campos de encuesta de egresados (EEBT) ya fueron integrados al Diccionario Maestro.</li>
+                    </ul>
+                </div>
+                <!-- Media -->
+                <div class="p-4 bg-yellow-50 rounded-xl border border-yellow-200 risk-medium">
+                    <p class="text-xs font-bold text-yellow-800 flex items-center gap-2"><i class="fa-solid fa-arrow-right"></i> Media</p>
+                    <ul class="text-[11px] text-yellow-900 list-disc list-inside space-y-1 mt-1">
+                        <li>Desarrollar un sistema de gestión de estadías por asesor académico (optimizando la asignación y carga de trabajo).</li>
+                        <li>Implementar la creación automática de grupos de continuidad (ej. 1°A → 2°A) y Kardex por grupo con historial de cambios de modalidad.</li>
+                        <li>Configurar recordatorios automáticos y alertas tempranas de deserción.</li>
+                    </ul>
+                </div>
+                <!-- Baja -->
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 risk-low">
+                    <p class="text-xs font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-arrow-down"></i> Baja</p>
+                    <ul class="text-[11px] text-slate-700 list-disc list-inside space-y-1 mt-1">
+                        <li>Documentar formalmente los mecanismos de escalamiento interno para la resolución de incidencias (ej. reenvíos de Eliut López y Blanca Escobedo).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- MATRIZ DE USO DE CAMPOS -->
+        <section class="glass-card p-5 md:p-6 border-t-4 border-t-indigo-500">
+            <div class="flex items-center gap-3 mb-5 border-b border-ui-border pb-4">
+                <span class="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center">
+                    <i class="fa-solid fa-table-cells text-indigo-600 text-base"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-950">Matriz de uso de campos por departamento</h2>
+                    <p class="text-xs text-ui-textMuted">Propietario (✦) y consumidores (X) de cada campo crítico.</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-[10px] border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-ui-border">
+                            <th class="p-2 text-left font-semibold text-slate-700">Campo</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Serv. Escolares</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Estadías/Egresados</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Titulación</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Tutorías/PSP</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Serv. Estudiantiles</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Vinculación</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Academia</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Finanzas</th>
+                            <th class="p-2 text-center font-semibold text-slate-700">Becas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matriz-uso-body"></tbody>
+                </table>
+            </div>
+            <div class="text-[10px] text-slate-400 mt-3 text-center">✦ Propietario · X Consumidor</div>
+        </section>
+
+        <!-- NOTA DE CIERRE Y RESPONSABILIDAD -->
+        <div class="glass-card p-5 md:p-6 border-t-4 border-t-slate-800 bg-slate-50/50">
+            <div class="flex items-center gap-3 mb-4 border-b border-ui-border pb-4">
+                <span class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center">
+                    <i class="fa-solid fa-scale-balanced text-white text-base"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-950">Nota de cierre y responsabilidad</h2>
+                    <p class="text-xs text-ui-textMuted">Confidencialidad y alcance del documento</p>
+                </div>
+            </div>
+            <div class="text-[11px] text-ui-textMain space-y-2 leading-relaxed">
+                <p><strong>NOTA IMPORTANTE:</strong> Conforme a lo comunicado en el correo del 9 de junio de 2026, los departamentos que no enviaron correcciones ni confirmación antes del plazo establecido (12 de junio, 1:00 p.m.) <strong>asumen que la información consolidada es correcta</strong>. Cualquier omisión, dato erróneo o desfase posterior recaerá en la responsabilidad del área correspondiente.</p>
+                <p>El uso de la información contenida en este documento es responsabilidad de quien la recibe, ya que es considerada confidencial de acuerdo con el <strong>Art. 3, fracción 32 de la Ley de Transparencia y Acceso a la Información Pública del Estado de Nuevo León</strong>.</p>
+                <div class="flex justify-end text-[10px] text-slate-500 border-t border-ui-border pt-3 mt-3">
+                    <div class="text-right">
+                        <p class="font-semibold text-slate-700">Ing. Luis Javier Cervantes Ruiz</p>
+                        <p>Jefe de Control de Sistemas · Universidad Tecnológica Gral. Mariano Escobedo</p>
+                        <p>Junio 2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // ---- INICIALIZACIÓN DE MERMAID CON TAMAÑO DE FUENTE MEJORADO ----
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            securityLevel: 'loose',
+            flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+            themeVariables: {
+                fontFamily: 'Inter, system-ui, sans-serif',
+                fontSize: '16px', // Tamaño de fuente más grande
+                primaryColor: '#ffffff',
+                primaryTextColor: '#1e293b',
+                lineColor: '#94a3b8',
+                nodeBorder: '#cbd5e1',
+                nodeTextColor: '#1e293b',
+                edgeLabelBackground: '#ffffff',
+                edgeLabelColor: '#0f172a',
+                clusterBkg: '#f8fafc',
+                clusterBorder: '#e2e8f0'
+            }
+        });
+
+        // ---- ZOOM Y PAN (con ajuste de zoom mínimo) ----
+        (function() {
+            const viewport = document.getElementById('mermaid-viewport');
+            const wrapper = viewport?.querySelector('.mermaid-wrapper');
+            if (!viewport || !wrapper) return;
+
+            let scale = 1;
+            let translateX = 0,
+                translateY = 0;
+            let isDragging = false;
+            let startX, startY, startTranslateX, startTranslateY;
+
+            function updateTransform() {
+                wrapper.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+                const level = document.querySelector('.zoom-level');
+                if (level) level.innerText = Math.round(scale * 100) + '%';
+            }
+
+            function zoomAt(delta, clientX, clientY) {
+                const rect = viewport.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
+                const factor = delta > 0 ? 1.1 : 0.9;
+                const newScale = Math.min(3, Math.max(0.4, scale * factor));
+                if (newScale === scale) return;
+                const dx = x - translateX;
+                const dy = y - translateY;
+                translateX = x - dx * (newScale / scale);
+                translateY = y - dy * (newScale / scale);
+                scale = newScale;
+                updateTransform();
+            }
+
+            function fitView() {
+                const containerRect = viewport.getBoundingClientRect();
+                const wrapperRect = wrapper.getBoundingClientRect();
+                let scaleX = (containerRect.width - 20) / wrapperRect.width;
+                let scaleY = (containerRect.height - 20) / wrapperRect.height;
+                // Zoom mínimo 0.85 para que el texto sea legible
+                let newScale = Math.min(scaleX, scaleY, 1.8);
+                newScale = Math.max(newScale, 0.85);
+                scale = newScale;
+                translateX = (containerRect.width - wrapperRect.width * scale) / 2;
+                translateY = 20;
+                updateTransform();
+            }
+
+            function resetView() {
+                scale = 1;
+                translateX = 0;
+                translateY = 0;
+                updateTransform();
+            }
+
+            // Eventos de ratón
+            viewport.addEventListener('mousedown', (e) => {
+                if (e.button !== 0) return;
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startTranslateX = translateX;
+                startTranslateY = translateY;
+                viewport.style.cursor = 'grabbing';
+                e.preventDefault();
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                translateX = startTranslateX + (e.clientX - startX);
+                translateY = startTranslateY + (e.clientY - startY);
+                updateTransform();
+            });
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                viewport.style.cursor = 'grab';
+            });
+
+            // Rueda
+            viewport.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                zoomAt(e.deltaY < 0 ? 1 : -1, e.clientX, e.clientY);
+            }, { passive: false });
+
+            // Botones
+            document.querySelector('.zoom-in')?.addEventListener('click', () => zoomAt(1, viewport.clientWidth / 2, viewport
+                .clientHeight / 2));
+            document.querySelector('.zoom-out')?.addEventListener('click', () => zoomAt(-1, viewport.clientWidth / 2,
+                viewport.clientHeight / 2));
+            document.querySelector('.fit-view')?.addEventListener('click', fitView);
+            document.querySelector('.reset-view')?.addEventListener('click', resetView);
+
+            // Toque
+            let touchStart = null;
+            viewport.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, tx: translateX, ty: translateY };
+                    isDragging = true;
+                }
+            });
+            viewport.addEventListener('touchmove', (e) => {
+                if (touchStart && e.touches.length === 1) {
+                    translateX = touchStart.tx + (e.touches[0].clientX - touchStart.x);
+                    translateY = touchStart.ty + (e.touches[0].clientY - touchStart.y);
+                    updateTransform();
+                    e.preventDefault();
+                }
+            });
+            viewport.addEventListener('touchend', () => { touchStart = null;
+                isDragging = false; });
+
+            // Inicializar con vista ajustada
+            setTimeout(fitView, 300);
+        })();
+
+        // ---- DATOS Y FUNCIONES DE RENDERIZADO ----
+        const fases = [
+            { id: 1, titulo: 'FASE 1: Interesado', icono: 'fa-users', color: 'brand', desc: 'Primer punto de contacto institucional. Difusión realiza visitas a preparatorias, reparto de material promocional y pláticas sobre la oferta educativa. Se recolectan datos básicos del interesado mediante formulario de pre-prospección.',
+                objetivos: ['Identificar canales efectivos de captación (redes, recomendación, visitas).',
+                    'Registrar datos básicos: nombre, teléfono, correo, escuela de procedencia, carrera de interés.',
+                    'Medir efectividad de campañas publicitarias.',
+                    'Clasificar prospectos calificados vs. no calificados.'
+                ], procesos: ['Visitas a preparatorias con material institucional.',
+                    'Pláticas informativas sobre oferta educativa.',
+                    'Llenado de formulario de pre-prospección.',
+                    'Consolidación de registro de interesados y reporte a Planeación/Rectoría.',
+                    'Campañas en redes sociales y canales digitales.'
+                ], documentos: ['Ficha de prospección inicial.', 'Encuesta de medio de difusión y procedencia escolar.',
+                    'Reporte de visitas a preparatorias.', 'Listado consolidado de interesados por carrera y sede.'
+                ], resultados: ['Interesado calificado con prerregistro digital.'],
+                transicion: 'Generación de prerregistro para avanzar a FASE 2: Aspirante.',
+                resumen: 'Atracción institucional basada en datos de procedencia y captación.' },
+            { id: 2, titulo: 'FASE 2: Aspirante', icono: 'fa-user-plus', color: 'brand', desc: 'Procesamiento formal de solicitudes de ingreso. Servicios Escolares recibe documentación, valida autenticidad, registra datos en GES, aplica examen de admisión y emite dictamen. Si es admitido, se genera matrícula y se abre expediente.',
+                objetivos: ['Validar documentación académica y de identidad.',
+                    'Registrar datos personales completos (nombre, CURP, fecha de nacimiento, domicilio, contacto, familiares).',
+                    'Registrar escuela de procedencia, ciclo, folio de certificado.',
+                    'Aplicar examen de admisión y emitir dictamen.', 'Asignar programa educativo, sede, turno, ciclo de ingreso.',
+                    'Generar matrícula interna y oficial (SEP).', 'Abrir expediente físico y digital.'
+                ], procesos: ['Recepción y revisión de documentos.',
+                    'Captura de datos personales, de contacto, domicilio y familiares en GES.',
+                    'Validación de certificado de bachillerato.',
+                    'Aplicación y evaluación de examen de admisión.', 'Emisión de dictamen.',
+                    'Generación de matrícula interna y oficial.', 'Apertura de expediente.'
+                ], documentos: ['Certificado de bachillerato original o kardex completo.',
+                    'CURP impresa actualizada.', '4 fotografías tamaño infantil.',
+                    'Comprobante de domicilio (≤3 meses).', 'Certificado médico oficial.'
+                ], resultados: ['Aspirante admitido con matrícula generada.', 'Aspirante no admitido.'],
+                transicion: 'Pago de inscripción ($560 TSU) y asignación de grupo → FASE 3: Alumno TSU.',
+                resumen: 'Control formal de ingreso mediante validación documental y académica.' },
+            { id: 3, titulo: 'FASE 3: Alumno TSU', icono: 'fa-user-graduate', color: 'brand', desc: 'Núcleo académico del nivel TSU. Comprende desde la primera inscripción hasta la acreditación del 100% de créditos. Se repite cuatrimestralmente. Participan Escolares, Dirección de Carrera, Finanzas, Becas, Psicología, Enfermería, Deportes, Cultura, Tutorías, Sistemas y Dual.',
+                objetivos: ['Administrar matrícula, grupo, turno y modalidad.',
+                    'Dar seguimiento académico (inscripción, clases, evaluaciones, reinscripción).',
+                    'Gestionar bajas temporales y definitivas (23 causas).',
+                    'Tramitar cambios internos (carrera, turno, grupo, sede, acreditaciones).',
+                    'Controlar adeudos y becas.', 'Seguimiento psicosocial y estudiantil.'
+                ], procesos: ['Verificación de no adeudo financiero/de documentos.',
+                    'Reinscripción y pago de cuota.', 'Asignación de grupo, turno, modalidad.',
+                    'Captura de calificaciones parciales y finales.',
+                    'Actualización de estatus (regular, irregular, repetidor, extemporáneo, especial).',
+                    'Gestión de becas (asignación y seguimiento).',
+                    'Seguimiento de programas PRONAPINNA, PRONAIND, PROIGUALDAD.',
+                    'Proceso Dual: plática, registro de candidato, convenio, matriz de correspondencia, rotaciones.'
+                ], documentos: ['Kardex académico.', 'Boletas de calificaciones.', 'Formatos de trámites escolares.',
+                    'Comprobantes de pago.', 'Constancia de no adeudo.', 'Carta compromiso (para repetidores).'
+                ], resultados: ['Alumno regular que avanza a estadía al completar créditos.', 'Baja temporal o definitiva.'],
+                transicion: 'Acreditación del 100% de créditos → FASE 4: Estadía práctica TSU.',
+                resumen: 'Núcleo académico del nivel TSU con todos los servicios de apoyo.' },
+            { id: 4, titulo: 'FASE 4: Estadía práctica TSU', icono: 'fa-building', color: 'emerald', desc: 'Aplicación de competencias técnicas del TSU en una empresa receptora mediante proyecto de estadía. Departamentos: Estadías y Egresados (operador), Vinculación (convenios), Academia (asesor académico), Escolares y Finanzas (requisitos de entrada).',
+                objetivos: ['Verificar requisitos de entrada (expediente completo, saldo en cero, reinscripción vigente, seguro facultativo).',
+                    'Registrar empresa receptora y datos de contacto (jefe inmediato, RH).',
+                    'Registrar proyecto: nombre, fechas, horario, actividades.',
+                    'Asignar asesor académico.', 'Seguimiento mediante bitácoras y evidencias.',
+                    'Gestionar memoria técnica y carta de liberación.'
+                ], procesos: ['Plática de inducción (registro de asistencia).',
+                    'Validación de requisitos por Escolar/Finanzas.',
+                    'Captura de datos de empresa y proyecto.', 'Validación de convenio o carta de aceptación.',
+                    'Desarrollo de bitácoras y evidencias.', 'Entrega de memoria técnica.',
+                    'Evaluación por asesor empresarial y académico.', 'Actualización de estatus de liberación.'
+                ], documentos: ['Comprobante de reinscripción.', 'Comprobante de no adeudo.',
+                    'Constancia de seguro facultativo.', 'Protocolo de proyecto.', 'Datos de empresa (formulario).',
+                    'Carta de aceptación o convenio.', 'Bitácoras y evidencias.', 'Memoria técnica.',
+                    'Carta de liberación.'
+                ], resultados: ['Estadía liberada (Estatus de Liberación = Liberado).',
+                    'Estadía no acreditada (prórroga o recursamiento).'
+                ], transicion: 'Liberación de estadía → FASE 5: Titulación TSU.',
+                resumen: 'Vinculación práctica del estudiante TSU con el sector productivo.' },
+            { id: 5, titulo: 'FASE 5: Titulación TSU y decisión de continuidad', icono: 'fa-stamp', color: 'amber',
+                desc: 'Cierre legal del nivel TSU. Auditoría final del expediente, expedición de título y cédula profesional ante DGP-SEP. Bifurcación: continuar a Lic./Ing. o egresar directamente al mercado laboral.',
+                objetivos: ['Verificar expediente completo: créditos, estadía liberada, no adeudo.',
+                    'Recopilar y validar documentos de titulación.',
+                    'Gestionar título profesional TSU (físico y/o electrónico).',
+                    'Registrar ante DGP-SEP (folio, fecha, claves).', 'Obtener cédula profesional TSU.',
+                    'Determinar continuidad a Lic./Ing. o egreso.'
+                ], procesos: ['Confirmación de liberación de estadía por Escolar/Estadías.',
+                    'Revisión integral del expediente TSU.', 'Validación de pago de titulación.',
+                    'Revisión de cumplimiento de servicio social.',
+                    'Registro de modalidad de titulación y fechas.', 'Generación de paquete DGP-SEP.',
+                    'Trámite de folios y registro.', 'Actualización de estatus de titulación.',
+                    'Decisión de continuidad.'
+                ], documentos: ['Certificado total TSU.', 'Carta de liberación de estadía TSU.',
+                    'CURP actualizada.', 'Fotografías de titulación TSU.', 'Comprobante de pago de titulación.',
+                    'Constancia de no adeudo.', 'Constancia de servicio social (si aplica).'
+                ], resultados: ['Egresado TSU titulado con cédula profesional.',
+                    'Continuidad a Lic./Ing. o egreso directo a FASE 9.'
+                ], transicion: 'Si continúa → FASE 6; si no → FASE 9.',
+                resumen: 'Cierre legal del nivel TSU y bifurcación institucional del egresado.' },
+            { id: 6, titulo: 'FASE 6: Continuidad Lic./Ing.', icono: 'fa-arrow-right-arrow-left', color: 'brand',
+                desc: 'Continuidad académica del egresado TSU en Licenciatura/Ingeniería. Replica la operación de la Fase 3 (ciclo académico cuatrimestral) pero con duración de 5 cuatrimestres, costos superiores ($800/$800/$400) y sin modalidad Dual.',
+                objetivos: ['Validar cédula TSU y abrir expediente de continuidad.',
+                    'Asignar matrícula, grupo, turno, modalidad y cuatrimestre superior.',
+                    'Gestionar ciclo académico de 5 cuatrimestres.',
+                    'Controlar bajas, cambios internos y estadísticas del nivel superior.',
+                    'Gestionar becas y finanzas del nivel superior.'
+                ], procesos: ['Presentación de cédula TSU, kardex TSU y liberación de estadía TSU.',
+                    'Apertura de expediente de continuidad.', 'Asignación de plan superior, grupo, turno, modalidad.',
+                    'Actualización de matrícula y nivel en GES.', 'Verificación de no adeudo.',
+                    'Reinscripción y pago ($400).', 'Captura de calificaciones.', 'Actualización de estatus.'
+                ], documentos: ['Cédula profesional TSU.', 'Kardex TSU completo.',
+                    'Constancia de liberación de estadía TSU.', 'Solicitud de continuidad.',
+                    'Comprobantes de pago (inscripción $800, mensualidad $800, reinscripción $400).'
+                ], resultados: ['Alumno activo en Lic./Ing. que avanza a estadía superior al completar 5 cuatrimestres.'],
+                transicion: 'Acreditación de 5 cuatrimestres → FASE 7: Estadía profesional superior.',
+                resumen: 'Continuidad académica del egresado TSU al nivel Licenciatura/Ingeniería.' },
+            { id: 7, titulo: 'FASE 7: Estadía profesional superior', icono: 'fa-briefcase', color: 'emerald',
+                desc: 'Proyecto profesional de nivel Licenciatura/Ingeniería en empresa receptora. Mayor rigor metodológico que la estadía TSU; se espera propuesta de soluciones, optimización o innovación (Memoria de Grado).',
+                objetivos: ['Verificar requisitos de entrada (expediente completo, saldo en cero, reinscripción, seguro facultativo, cédula TSU).',
+                    'Registrar empresa superior y contactos.', 'Asignar asesor académico de nivel superior.',
+                    'Seguimiento con bitácoras y evidencias avanzadas.',
+                    'Gestionar Memoria de Grado y acta de liberación.'
+                ], procesos: ['Validación de requisitos.', 'Registro de datos de empresa superior.',
+                    'Validación de convenio o carta de aceptación superior.',
+                    'Asignación de asesor académico.', 'Desarrollo de bitácoras y evidencias.',
+                    'Entrega de Memoria de Grado.', 'Evaluación por comité/asesor y empresa.',
+                    'Actualización de estatus de liberación superior.'
+                ], documentos: ['Comprobante de reinscripción superior.', 'Comprobante de no adeudo.',
+                    'Constancia de seguro facultativo.', 'Cédula TSU en expediente.',
+                    'Protocolo de proyecto superior.', 'Datos de empresa superior.', 'Bitácoras y evidencias.',
+                    'Memoria de Grado.', 'Acta de Liberación Superior.'
+                ], resultados: ['Estadía superior liberada.'],
+                transicion: 'Liberación de estadía superior → FASE 8: Titulación Lic./Ing.',
+                resumen: 'Aplicación profesional avanzada previa a la titulación superior.' },
+            { id: 8, titulo: 'FASE 8: Titulación Lic./Ing.', icono: 'fa-certificate', color: 'rose',
+                desc: 'Auditoría final del expediente de nivel superior y expedición del título y cédula profesional de Licenciatura o Ingeniería ante DGP-SEP.',
+                objetivos: ['Verificar expediente superior completo: créditos, estadía liberada, no adeudo.',
+                    'Recopilar y validar documentos de titulación superior.',
+                    'Gestionar título profesional Lic./Ing. (físico y/o electrónico).',
+                    'Registrar ante DGP-SEP.', 'Obtener cédula profesional superior.'
+                ], procesos: ['Confirmación de liberación de estadía superior.',
+                    'Revisión integral del expediente Lic./Ing.', 'Validación de pago de titulación superior.',
+                    'Registro de modalidad de titulación.', 'Generación de paquete DGP-SEP superior.',
+                    'Trámite de folios y registro.', 'Actualización de estatus de titulación superior.'
+                ], documentos: ['Certificado de estudios superiores.', 'Carta de liberación de estadía superior.',
+                    'Cédula TSU (obligatoria).', 'CURP actualizada.', 'Fotografías de titulación ING/LIC.',
+                    'Comprobante de pago de titulación.', 'Constancia de no adeudo.',
+                    'Constancia de servicio social (si aplica).'
+                ], resultados: ['Egresado titulado de Licenciatura o Ingeniería.'],
+                transicion: 'Registro de egreso superior → FASE 9: Seguimiento de egresados.',
+                resumen: 'Cierre legal del nivel superior.' },
+            { id: 9, titulo: 'FASE 9: Seguimiento de egresados TSU y Lic./Ing.', icono: 'fa-chart-line', color: 'teal',
+                desc: 'Monitoreo permanente del impacto laboral, actualización profesional y vinculación institucional de egresados TSU y Licenciatura/Ingeniería. Fase sin fecha de cierre, vínculo de por vida.',
+                objetivos: ['Actualizar y mantener padrón de egresados con datos laborales.',
+                    'Medir empleabilidad: tiempo de primer empleo, sector, área.',
+                    'Aplicar encuestas a egresados y empleadores.', 'Operar Bolsa de Trabajo UTE.',
+                    'Reportar indicadores MIR: egreso, titulación, empleabilidad.', 'Promover educación continua.'
+                ], procesos: ['Registro de estatus del egresado (laboral y académico).',
+                    'Actualización de Generación de Egreso.', 'Aplicación de encuesta de empleabilidad (Indicador 10).',
+                    'Publicación de vacantes en Bolsa de Trabajo.', 'Vinculación de egresados con empresas.',
+                    'Generación de reportes para Rectoría, Calidad, Informe 911.',
+                    'Promoción de diplomados, cursos y posgrados.'
+                ], documentos: ['Encuesta de egresados.', 'Encuesta de empleadores.',
+                    'Formulario de Indicador 10.', 'Reporte de egreso, titulación y empleabilidad.',
+                    'Informe directivo y de Calidad.'
+                ], resultados: ['Indicadores MIR actualizados.', 'Bolsa de trabajo fortalecida.',
+                    'Retroalimentación para diseño curricular y captación.'
+                ], transicion: 'Vínculo institucional permanente.',
+                resumen: 'Seguimiento del impacto profesional de egresados TSU y Lic./Ing.' }
+        ];
+
+        const bajas = [
+            { id: 1, text: 'Dificultad de acceso o transporte al plantel', cat: 'Geográfico',
+                desc: 'Complicaciones logísticas por distancia o transporte.' },
+            { id: 2, text: 'Cambio de domicilio a otro país', cat: 'Geográfico',
+                desc: 'Migración internacional familiar o laboral.' },
+            { id: 3, text: 'Cambio de domicilio a otra entidad federativa', cat: 'Geográfico',
+                desc: 'Mudanza a otro estado.' },
+            { id: 4, text: 'Adeudo de materias', cat: 'Académico', desc: 'Acumulación de asignaturas no acreditadas.' },
+            { id: 5, text: 'Embarazo, maternidad, paternidad o matrimonio', cat: 'Socioemocional',
+                desc: 'Nuevas responsabilidades familiares.' },
+            { id: 6, text: 'Factor económico', cat: 'Económico-laboral',
+                desc: 'Falta de recursos para cuotas o transporte.' },
+            { id: 7, text: 'Trabajo', cat: 'Económico-laboral', desc: 'Incompatibilidad horaria con jornada laboral.' },
+            { id: 8, text: 'Enfermedad crónica o estancia hospitalaria', cat: 'Socioemocional',
+                desc: 'Condición de salud que impide continuidad.' },
+            { id: 9, text: 'Defunción', cat: 'Otros', desc: 'Fallecimiento del alumno.' },
+            { id: 10, text: 'Medida disciplinaria', cat: 'Otros', desc: 'Sanción por incumplimiento del reglamento.' },
+            { id: 11, text: 'Motivos emocionales', cat: 'Socioemocional',
+                desc: 'Ansiedad, depresión, estrés u otros factores.' },
+            { id: 12, text: 'Violencia o inseguridad en el entorno', cat: 'Socioemocional',
+                desc: 'Afectaciones del contexto social.' },
+            { id: 13, text: 'Acoso escolar', cat: 'Socioemocional', desc: 'Conflictos o acoso no resuelto.' },
+            { id: 14, text: 'Adicciones', cat: 'Socioemocional', desc: 'Problemas de salud pública individual.' },
+            { id: 15, text: 'Problemas familiares', cat: 'Socioemocional',
+                desc: 'Crisis familiares o responsabilidades emergentes.' },
+            { id: 16, text: 'Desinterés', cat: 'Socioemocional',
+                desc: 'Falta de motivación o desalineación vocacional.' },
+            { id: 17, text: 'Retraso en antecedente académico', cat: 'Académico',
+                desc: 'No entrega de certificado en tiempo.' },
+            { id: 18, text: 'Conclusión de estudios', cat: 'Otros', desc: 'Egreso natural del programa.' },
+            { id: 19, text: 'Otro motivo', cat: 'Otros', desc: 'Causa no clasificada.' },
+            { id: 20, text: 'Cambio de programa educativo', cat: 'Académico',
+                desc: 'Cambio a otro programa de la institución.' },
+            { id: 21, text: 'Causas académicas', cat: 'Académico', desc: 'Bajo rendimiento o reprobación sistemática.' },
+            { id: 22, text: 'Cambio de institución', cat: 'Otros', desc: 'Transferencia voluntaria a otra universidad.' },
+            { id: 23, text: 'No reinscripción', cat: 'Otros', desc: 'Abandono escolar sin trámite formal.' }
+        ];
+
+        const modalities = {
+            TRADICIONAL: { title: 'Tradicional presencial',
+                desc: 'Asistencia física regular en aulas y laboratorios. Es el esquema base del modelo académico.',
+                tsu: '6 cuatrimestres', ing: '5 cuatrimestres', complejidad: 'Estándar' },
+            BIS: { title: 'Bilingüe BIS',
+                desc: 'Modelo con énfasis en inglés y certificación lingüística progresiva. Un cuatrimestre adicional.',
+                tsu: '7 cuatrimestres', ing: '5 cuatrimestres', complejidad: 'Media' },
+            DESPRESURIZADA: { title: 'Despresurizado flexible',
+                desc: 'Carga académica reducida orientada a estudiantes con actividad laboral. Requiere carta de trabajo.',
+                tsu: '8 cuatrimestres', ing: '5 cuatrimestres', complejidad: 'Media' },
+            MIXTA: { title: 'Mixto híbrido',
+                desc: 'Combina sesiones presenciales con actividades virtuales mediante plataforma académica.',
+                tsu: '6 cuatrimestres', ing: '5 cuatrimestres', complejidad: 'Media' },
+            DUAL: { title: 'Modelo dual',
+                desc: 'Coformación universidad-empresa. Requiere convenio activo y seguimiento de vinculación. Exclusivo TSU.',
+                tsu: '6 cuatrimestres + fase industrial', ing: 'No disponible', complejidad: 'Alta' }
+        };
+
+        // Hallazgos enriquecidos del reporte
+        const hallazgos = [
+            { num: 1, titulo: 'Alta concentración en Servicios Escolares', color: 'red', icono: 'fa-warehouse',
+                desc: 'Servicios Escolares concentra la mayor parte de los campos críticos del ciclo de vida estudiantil (identidad, escolaridad, contacto, expediente médico, deportes y talleres). ~50% de la carga total.' },
+            { num: 2, titulo: 'Estadías y Egresados: nuevo bloque de 36 campos exclusivos', color: 'orange',
+                icono: 'fa-network-wired',
+                desc: 'El analsis de la etapa 3 incorpora campos detallados de inducción, datos del jefe inmediato, contacto de RH, encuesta de egresados, empleabilidad y bolsa de trabajo. Departamento con mayor crecimiento.' },
+            { num: 3, titulo: 'Campos especializados en Titulación (59 campos)', color: 'amber', icono: 'fa-stamp',
+                desc: 'Titulación administra el mayor número de campos exclusivos: folios DGP, registros SEP, estatus de título TSU e ING, cumplimiento de servicio social y reconocimiento.' },
+            { num: 4, titulo: 'Riesgo de ruptura entre Estadías y Titulación', color: 'yellow', icono: 'fa-link-slash',
+                desc: 'La falta de actualización oportuna del estatus de liberación y de entrega de memoria puede retrasar procesos de titulación. Coordinación crítica entre ambos departamentos.' },
+            { num: 5, titulo: 'Necesidad de validaciones automáticas en campos sensibles', color: 'slate',
+                icono: 'fa-spell-check',
+                desc: 'Campos como CURP, NSS, RFC, correo, CLABE y correos de contactos empresariales requieren máscaras de validación y formato controlado. Dato sensible con encriptación obligatoria en BD.' },
+            { num: 6, titulo: 'Modelo Dual falta mapear campos', color: 'red', icono: 'fa-building-circle-exclamation',
+                desc: 'La Coordinación Dual falto de llenar la etapa 1 para docuemntar los campos que requiere su area.' },
+            { num: 7, titulo: 'Campo "Nombre del Proyecto de Estadía" sin dueño definido', color: 'orange',
+                icono: 'fa-pen-to-square',
+                desc: 'Academia lo genera, Titulación lo consume. EEBT solicitó reconsideración argumentando que es el Área Académica quien funge como generadora. Se requiere acuerdo formal.' },
+            { num: 8, titulo: 'Difusión, Becas, Deportes y Dirección de Carrera sin datos', color: 'red',
+                icono: 'fa-user-slash',
+                desc: 'Cuatro departamentos clave no entregaron información en ninguna etapa. Conforme a la nota del 9 de junio, asumen que la información es correcta, lo que representa un riesgo de omisiones.' }
+        ];
+
+        const camposVerdad = [
+            'Matrícula interna', 'CURP', 'Nombre(s)', 'Apellido Paterno', 'Apellido Materno',
+            'Fecha de nacimiento', 'Género', 'Correo electrónico principal', 'Teléfonos',
+            'Calle y número', 'Colonia', 'Ciudad/Municipio', 'Estado', 'Código postal',
+            'Nivel educativo / carrera', 'Grupo', 'Turno', 'Sede / Campus', 'Status actual',
+            'Cuatrimestre / Semestre', 'Adeudo actual', 'Tipo de beca', 'Empresa receptora',
+            'Estatus de liberación', 'Cédula TSU', 'Generación de egreso'
+        ];
+
+        const departamentos = [
+            { nombre: 'Servicios Escolares', fases: '1–9', color: 'brand', icono: 'fa-school',
+                campos: 'Identidad, matrícula, expediente, estatus académico, datos personales y trayectoria. Además, administra clubes deportivos y talleres culturales.',
+                depende: 'Difusión, Admisiones y áreas académicas', entrega: 'Todas las áreas institucionales',
+                nota: 'Área fuente de los datos estructurales del estudiante y responsable de actividades extracurriculares.' },
+            { nombre: 'Vinculación / Mercadotecnia', fases: '1,2,4,7,9', color: 'emerald', icono: 'fa-briefcase',
+                campos: 'Empresa receptora, convenio, proyecto, asesor empresarial, medio para conseguir empresa y liberación de estadía.',
+                depende: 'Servicios Escolares y Direcciones de Carrera', entrega: 'Titulación y Seguimiento de Egresados',
+                nota: 'Clave para evitar retrasos en la titulación. Gestiona el canal por el cual el alumno llegó a la empresa.' },
+            { nombre: 'Estadías y Egresados (EEBT)', fases: '3,4,5,7,8,9', color: 'teal', icono: 'fa-network-wired',
+                campos: 'Inducción a estadías, datos de empresa (jefe inmediato, RH, área, horario, actividades, condición laboral), encuestas de egresados, satisfacción institucional, empleabilidad y bolsa de trabajo.',
+                depende: 'Servicios Escolares, Vinculación y Titulación', entrega: 'Dirección de Carrera, Mercadotecnia y DGP',
+                nota: 'Propietario de 36 campos exclusivos de seguimiento de estadía y egresado. Nuevo bloque de datos a partir del xlsx v2.' },
+            { nombre: 'Titulación', fases: '5,8', color: 'amber', icono: 'fa-stamp',
+                campos: 'Folio DGP, título físico, título electrónico, cédula, estatus de titulación, cumplimiento de servicio social y proceso de reconocimiento.',
+                depende: 'Servicios Escolares y Vinculación', entrega: 'DGP-SEP y Seguimiento de Egresados',
+                nota: 'Consolida el cierre legal del ciclo académico.' },
+            { nombre: 'Tutorías / PSP / IEG', fases: '2,3,6', color: 'rose', icono: 'fa-brain',
+                campos: 'Tutor asignado, factores de vulnerabilidad, ID discapacidad, ID grupos vulnerables (comunidad LGBT+) y seguimiento socioemocional.',
+                depende: 'Servicios Escolares', entrega: 'Direcciones de Carrera',
+                nota: 'Contribuye a permanencia y prevención de bajas. Administra datos sensibles con acceso restringido.' },
+            { nombre: 'Servicios Estudiantiles', fases: '3', color: 'sky', icono: 'fa-users',
+                campos: 'Participación deportiva y cultural (coordinación con Escolares para registro de clubes).',
+                depende: 'Servicios Escolares', entrega: 'Secretaría Académica',
+                nota: 'Fortalece indicadores de formación integral, pero la administración de los clubes recae en Escolares.' },
+            { nombre: 'Academia / Dirección de Carrera', fases: '1,2,3,4,7,9', color: 'violet', icono: 'fa-chalkboard-user',
+                campos: 'Asesor académico, horario de asesoría académica, grado/semestre, turno y validación de proyectos de estadía.',
+                depende: 'Servicios Escolares y Direcciones de Carrera', entrega: 'Vinculación y Titulación',
+                nota: 'Participa en la validación académica de trayectorias y estadías.' },
+            { nombre: 'Finanzas', fases: '3,6', color: 'lime', icono: 'fa-coins',
+                campos: 'Adeudo actual, CLABE interbancaria, RFC, razón social, régimen fiscal, último pago, pago de titulación, etc.',
+                depende: 'Servicios Escolares', entrega: 'Secretaría Administrativa',
+                nota: 'Dato restrictivo: adeudo bloquea reinscripción. Datos sensibles con encriptación obligatoria.' },
+            { nombre: 'Becas', fases: '3,6', color: 'purple', icono: 'fa-hand-holding-heart',
+                campos: 'Tipos de beca (académica, deportiva, cultural, alimenticia, transporte, hijos empleados, nuevo ingreso), promedios, ingresos y gastos familiares.',
+                depende: 'Servicios Escolares', entrega: 'Secretaría Académica',
+                nota: 'Gestiona la asignación y renovación de becas con base en rendimiento y situación socioeconómica.' }
+        ];
+
+        const fieldsData = [
+            { field: 'Matrícula interna', owner: 'Servicios Escolares' }, { field: 'Matrícula oficial',
+                owner: 'Servicios Escolares' },
+            { field: 'Nombre(s)', owner: 'Servicios Escolares' }, { field: 'Apellido paterno',
+                owner: 'Servicios Escolares' },
+            { field: 'Apellido materno', owner: 'Servicios Escolares' }, { field: 'CURP',
+                owner: 'Servicios Escolares' },
+            { field: 'Fecha de nacimiento', owner: 'Servicios Escolares' }, { field: 'Género',
+                owner: 'Servicios Escolares' },
+            { field: 'Estado civil', owner: 'Servicios Escolares' }, { field: 'Nacionalidad',
+                owner: 'Servicios Escolares' },
+            { field: 'Lugar de nacimiento (ciudad)', owner: 'Servicios Escolares' }, { field: 'Lugar de nacimiento (estado)',
+                owner: 'Servicios Escolares' },
+            { field: 'Correo electrónico principal', owner: 'Servicios Escolares' }, { field: 'Correo electrónico alterno',
+                owner: 'Servicios Escolares' },
+            { field: 'Teléfonos (tipo y número)', owner: 'Servicios Escolares' }, { field: 'Calle y número',
+                owner: 'Servicios Escolares' },
+            { field: 'Entre calles', owner: 'Servicios Escolares' }, { field: 'Colonia',
+                owner: 'Servicios Escolares' },
+            { field: 'Ciudad / Municipio', owner: 'Servicios Escolares' }, { field: 'Código postal',
+                owner: 'Servicios Escolares' },
+            { field: 'Estado', owner: 'Servicios Escolares' }, { field: 'Nombre del tutor',
+                owner: 'Servicios Escolares' },
+            { field: 'Parentesco del tutor', owner: 'Servicios Escolares' }, { field: 'Datos del padre',
+                owner: 'Servicios Escolares' },
+            { field: 'Datos de la madre', owner: 'Servicios Escolares' }, { field: 'Contacto familiar alterno',
+                owner: 'Servicios Escolares' },
+            { field: 'Núm. familia / clave', owner: 'Servicios Escolares' }, { field: 'Habla lengua indígena',
+                owner: 'Servicios Escolares' },
+            { field: 'ID grupo étnico', owner: 'Servicios Escolares' }, { field: 'Requerimiento de accesibilidad',
+                owner: 'Servicios Escolares' },
+            { field: 'Edad', owner: 'Servicios Escolares' }, { field: 'Nivel educativo / carrera',
+                owner: 'Servicios Escolares' },
+            { field: 'Grupo', owner: 'Servicios Escolares' }, { field: 'Modalidad de estudio',
+                owner: 'Servicios Escolares' },
+            { field: 'Sede / Campus (ID_Campus)', owner: 'Servicios Escolares' }, { field: 'Status actual',
+                owner: 'Servicios Escolares' },
+            { field: 'Ciclo de ingreso', owner: 'Servicios Escolares' }, { field: 'Fecha de ingreso',
+                owner: 'Servicios Escolares' },
+            { field: 'Cuatrimestre / semestre', owner: 'Servicios Escolares' },
+            { field: 'Porcentaje de avance de créditos', owner: 'Servicios Escolares' },
+            { field: 'Correo institucional', owner: 'Servicios Escolares' }, { field: 'Tutor académico asignado',
+                owner: 'Servicios Escolares' },
+            { field: 'Escuela de procedencia', owner: 'Servicios Escolares' }, { field: 'Folio de certificado',
+                owner: 'Servicios Escolares' },
+            { field: 'Situación de certificado', owner: 'Servicios Escolares' }, { field: 'Alumno alta inicial',
+                owner: 'Servicios Escolares' },
+            { field: 'Alumno alta final', owner: 'Servicios Escolares' }, { field: 'Alumno alta periodo',
+                owner: 'Servicios Escolares' },
+            { field: 'Alumno especial', owner: 'Servicios Escolares' }, { field: 'Alumno extemporáneo',
+                owner: 'Servicios Escolares' },
+            { field: 'Alumno repetidor', owner: 'Servicios Escolares' }, { field: 'Alergias',
+                owner: 'Servicios Escolares' },
+            { field: 'Tipo de sangre', owner: 'Servicios Escolares' }, { field: 'Padecimientos y tratamientos',
+                owner: 'Servicios Escolares' },
+            { field: 'Medicamentos restringidos', owner: 'Servicios Escolares' },
+            { field: 'Autorización de traslado', owner: 'Servicios Escolares' },
+            { field: 'Número seguridad social (NSS)', owner: 'Servicios Escolares' },
+            { field: 'Clínica en la que consulta', owner: 'Servicios Escolares' },
+            { field: '¿Cómo te enteraste de la institución?', owner: 'Servicios Escolares' },
+            { field: 'Motivo principal de elección', owner: 'Servicios Escolares' },
+            { field: '¿Alguien te recomendó? (nombre/matrícula)', owner: 'Servicios Escolares' },
+            { field: 'ID promotor / reclutador', owner: 'Servicios Escolares' },
+            { field: 'Movilidad estudiantil', owner: 'Servicios Escolares' }, { field: 'Turno',
+                owner: 'Servicios Escolares' },
+            { field: '¿Qué deporte practicas?', owner: 'Servicios Escolares' },
+            { field: 'Asistencia a talleres culturales', owner: 'Servicios Escolares' },
+            { field: 'Eventos culturales', owner: 'Servicios Escolares' },
+            { field: 'Usuario', owner: 'Sistemas' }, { field: 'Contraseña', owner: 'Sistemas' },
+            { field: 'Correo institucional (sistemas)', owner: 'Sistemas' },
+            { field: 'Fecha de registro interno (FECHA_ACTUALIZACION)', owner: 'Sistemas' },
+            { field: 'Usuario actualizador (USERNAME_ACTUALIZA)', owner: 'Sistemas' },
+            { field: 'Usuario creador (USERNAME)', owner: 'Sistemas' },
+            { field: 'Adeudo actual', owner: 'Finanzas' }, { field: 'CLABE interbancaria',
+                owner: 'Finanzas' },
+            { field: 'RFC', owner: 'Finanzas' }, { field: 'Razón social', owner: 'Finanzas' },
+            { field: 'Régimen fiscal y uso CFDI', owner: 'Finanzas' }, { field: 'Quién factura',
+                owner: 'Finanzas' },
+            { field: 'Último pago caja', owner: 'Finanzas' }, { field: 'Último pago fecha',
+                owner: 'Finanzas' },
+            { field: 'Último pago recibo caja', owner: 'Finanzas' }, { field: 'Último pago sesión caja',
+                owner: 'Finanzas' },
+            { field: 'Observaciones estado de cuenta', owner: 'Finanzas' }, { field: 'Pago de titulación',
+                owner: 'Finanzas' },
+            { field: 'Beca académica', owner: 'Becas' }, { field: 'Beca alimenticia',
+                owner: 'Becas' },
+            { field: 'Beca cultural', owner: 'Becas' }, { field: 'Beca deportiva',
+                owner: 'Becas' },
+            { field: 'Beca transporte', owner: 'Becas' }, { field: 'Beca hijos empleados',
+                owner: 'Becas' },
+            { field: 'Beca nuevo ingreso (acad/dep/cult/alim/trans)', owner: 'Becas' },
+            { field: 'Promedio general de preparatoria', owner: 'Becas' },
+            { field: 'Porcentaje de beca otorgada en el cuatrimestre anterior', owner: 'Becas' },
+            { field: 'Promedio del cuatrimestre anterior', owner: 'Becas' },
+            { field: 'Monto de ingreso (mensual)', owner: 'Becas' },
+            { field: 'Número de personas dependientes', owner: 'Becas' },
+            { field: 'Estimado en gastos de alimentación', owner: 'Becas' },
+            { field: 'Estimado en gastos de educación', owner: 'Becas' },
+            { field: 'Estimado en gastos de renta o pagos de préstamos hipotecarios (Infonavit)', owner: 'Becas' },
+            { field: 'Estimado en gastos de servicios (agua, luz, teléfono, etc.)', owner: 'Becas' },
+            { field: 'Estimado en gastos varios (especifique)', owner: 'Becas' },
+            { field: 'Empresa receptora', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Enlace / asesor empresarial', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Correo del enlace', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Fecha de inicio de estadía', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Fecha de término de estadía', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Estatus de convenio', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Estatus de liberación', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Empresa o lugar de trabajo', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Horario laboral', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Puesto u ocupación', owner: 'Vinculación / Mercadotecnia' },
+            { field: '¿Trabajas actualmente?', owner: 'Vinculación / Mercadotecnia' },
+            { field: 'Asistencia a plática de inducción', owner: 'Estadías y Egresados' },
+            { field: 'Empresa asignada en inducción', owner: 'Estadías y Egresados' },
+            { field: 'Medio para conseguir empresa', owner: 'Estadías y Egresados' },
+            { field: 'Horario específico de estadía en empresa', owner: 'Estadías y Egresados' },
+            { field: 'Área/Departamento de estadía', owner: 'Estadías y Egresados' },
+            { field: 'Nombre del jefe inmediato', owner: 'Estadías y Egresados' },
+            { field: 'Puesto del jefe inmediato', owner: 'Estadías y Egresados' },
+            { field: 'Especialización del jefe inmediato', owner: 'Estadías y Egresados' },
+            { field: 'Teléfono celular del jefe inmediato', owner: 'Estadías y Egresados' },
+            { field: 'Correo electrónico del jefe inmediato', owner: 'Estadías y Egresados' },
+            { field: 'Teléfono de oficina del jefe inmediato', owner: 'Estadías y Egresados' },
+            { field: 'Nombre del contacto de RH', owner: 'Estadías y Egresados' },
+            { field: 'Puesto del contacto de RH', owner: 'Estadías y Egresados' },
+            { field: 'Especialización del contacto de RH', owner: 'Estadías y Egresados' },
+            { field: 'Teléfono celular del contacto de RH', owner: 'Estadías y Egresados' },
+            { field: 'Correo electrónico del contacto de RH', owner: 'Estadías y Egresados' },
+            { field: 'Teléfono de oficina del contacto de RH', owner: 'Estadías y Egresados' },
+            { field: 'Principales actividades en la empresa', owner: 'Estadías y Egresados' },
+            { field: 'Condición del alumno en la empresa', owner: 'Estadías y Egresados' },
+            { field: 'Horario de asesoría académica', owner: 'Estadías y Egresados' },
+            { field: 'Nombre del proyecto', owner: 'Estadías y Egresados' },
+            { field: 'Entrega de memoria de estadías', owner: 'Estadías y Egresados' },
+            { field: 'Calificación', owner: 'Estadías y Egresados' }, { field: 'Certificaciones',
+                owner: 'Estadías y Egresados' },
+            { field: 'Idiomas', owner: 'Estadías y Egresados' },
+            { field: 'Satisfacción con infraestructura', owner: 'Estadías y Egresados' },
+            { field: 'Satisfacción con laboratorios', owner: 'Estadías y Egresados' },
+            { field: 'Satisfacción con profesores', owner: 'Estadías y Egresados' },
+            { field: 'Satisfacción con modelo educativo', owner: 'Estadías y Egresados' },
+            { field: 'Educación continua', owner: 'Estadías y Egresados' },
+            { field: 'Tiempo para conseguir empleo', owner: 'Estadías y Egresados' },
+            { field: 'Tipo de contrato', owner: 'Estadías y Egresados' },
+            { field: 'Prestaciones laborales', owner: 'Estadías y Egresados' },
+            { field: 'Posibilidades de ascenso', owner: 'Estadías y Egresados' },
+            { field: 'Disposición a cambiar de trabajo', owner: 'Estadías y Egresados' },
+            { field: 'Motivos de desempleo', owner: 'Estadías y Egresados' },
+            { field: 'Continuidad de estudios', owner: 'Estadías y Egresados' },
+            { field: 'Estatus de titulación (egresados)', owner: 'Estadías y Egresados' },
+            { field: 'Interés en inscribirse a bolsa de trabajo', owner: 'Estadías y Egresados' },
+            { field: 'Duración de inscripción en bolsa de trabajo', owner: 'Estadías y Egresados' },
+            { field: 'Áreas de experiencia laboral', owner: 'Estadías y Egresados' },
+            { field: 'Cédula TSU', owner: 'Titulación' }, { field: 'Ciclo TSU',
+                owner: 'Titulación' },
+            { field: 'Ciclo Lic./Ing.', owner: 'Titulación' }, { field: 'Ciclo de escuela de procedencia',
+                owner: 'Titulación' },
+            { field: 'Clave de CCT de la universidad', owner: 'Titulación' },
+            { field: 'Clave de entidad federativa de escuela de procedencia', owner: 'Titulación' },
+            { field: 'Clave de la institución (DGP)', owner: 'Titulación' },
+            { field: 'Clave de programa educativo (DGP)', owner: 'Titulación' },
+            { field: 'Cumplimiento de servicio social', owner: 'Titulación' },
+            { field: 'Edad al momento de egresar', owner: 'Titulación' },
+            { field: 'Egresado con proceso actual de titulación (electrónico)', owner: 'Titulación' },
+            { field: 'Egresado con proceso anterior de titulación', owner: 'Titulación' },
+            { field: 'Egresado de otra UT no titulado de TSU', owner: 'Titulación' },
+            { field: 'Egresado en trámite', owner: 'Titulación' },
+            { field: 'Egresado no titulado', owner: 'Titulación' },
+            { field: 'Egresado pendiente de titular', owner: 'Titulación' },
+            { field: 'Egresado registrado', owner: 'Titulación' },
+            { field: 'Egresado titulado', owner: 'Titulación' },
+            { field: 'Egresado TSU titulado en otra UT', owner: 'Titulación' },
+            { field: 'Entidad federativa de escuela de procedencia', owner: 'Titulación' },
+            { field: 'Entidad federativa UT de procedencia de TSU', owner: 'Titulación' },
+            { field: 'Entrega de certificado de bachillerato original', owner: 'Titulación' },
+            { field: 'Entrega de cumplimiento de estadía profesional ING', owner: 'Titulación' },
+            { field: 'Entrega de cumplimiento de estadía profesional TSU', owner: 'Titulación' },
+            { field: 'Entrega de CURP', owner: 'Titulación' },
+            { field: 'Entrega de fotografías de titulación ING', owner: 'Titulación' },
+            { field: 'Entrega de fotografías de titulación TSU', owner: 'Titulación' },
+            { field: 'Estatus de título TSU', owner: 'Titulación' },
+            { field: 'Fecha de entrega de cumplimiento de estadía', owner: 'Titulación' },
+            { field: 'Fecha de examen profesional', owner: 'Titulación' },
+            { field: 'Fecha de exención de examen profesional', owner: 'Titulación' },
+            { field: 'Fecha de inicio ING/LIC', owner: 'Titulación' },
+            { field: 'Fecha de registro SEP para cédula profesional (DGP)', owner: 'Titulación' },
+            { field: 'Fecha de término ING/LIC', owner: 'Titulación' },
+            { field: 'Folio de certificados de estudios', owner: 'Titulación' },
+            { field: 'Folio de exención de examen profesional', owner: 'Titulación' },
+            { field: 'Folio de registro SEP para cédula profesional (DGP)', owner: 'Titulación' },
+            { field: 'Folio de servicio social', owner: 'Titulación' },
+            { field: 'Folio de título profesional electrónico', owner: 'Titulación' },
+            { field: 'Folio de título profesional físico', owner: 'Titulación' },
+            { field: 'Generación de periodo inicial', owner: 'Titulación' },
+            { field: 'Generación de egreso', owner: 'Titulación' },
+            { field: 'ID autorización reconocimiento', owner: 'Titulación' },
+            { field: 'ID fundamento legal de servicio social', owner: 'Titulación' },
+            { field: 'ID modalidad de titulación', owner: 'Titulación' },
+            { field: 'ID tipo de estudio antecedente', owner: 'Titulación' },
+            { field: 'Invasión de ciclo entre bachillerato', owner: 'Titulación' },
+            { field: 'Libro para impresión de documentos', owner: 'Titulación' },
+            { field: 'Nombre completo de programa educativo (DGP)', owner: 'Titulación' },
+            { field: 'Nombre de director de carrera', owner: 'Titulación' },
+            { field: 'Periodo de inicio de escuela de procedencia', owner: 'Titulación' },
+            { field: 'Periodo de término de escuela de procedencia', owner: 'Titulación' },
+            { field: 'Profesión de director de carrera', owner: 'Titulación' },
+            { field: 'Puesto de director de carrera', owner: 'Titulación' },
+            { field: 'Título ING anterior con proceso pendiente', owner: 'Titulación' },
+            { field: 'Título ING listo con proceso anterior', owner: 'Titulación' },
+            { field: 'Título TSU anterior con proceso pendiente', owner: 'Titulación' },
+            { field: 'Título TSU listo con proceso anterior', owner: 'Titulación' },
+            { field: 'UT de procedencia de TSU', owner: 'Titulación' },
+            { field: 'ID de alumnos con discapacidad', owner: 'Tutorías / PSP / IEG' },
+            { field: 'ID de grupos vulnerables (comunidad LGBT+)', owner: 'Tutorías / PSP / IEG' },
+            { field: 'Asesor académico de estadía', owner: 'Academia / Dirección de Carrera' },
+            { field: 'Turno (academia)', owner: 'Academia / Dirección de Carrera' }
+        ];
+
+        const matrizUso = [
+            { campo: 'Nombre(s)', escolares: '✦', estadias: 'X', titulacion: 'X', tutorias: 'X', estudiantiles: 'X',
+                vinculacion: 'X', academia: 'X', finanzas: '', becas: '' },
+            { campo: 'Apellido Paterno', escolares: '✦', estadias: 'X', titulacion: 'X', tutorias: 'X',
+                estudiantiles: 'X', vinculacion: 'X', academia: 'X', finanzas: '', becas: '' },
+            { campo: 'CURP', escolares: '✦', estadias: 'X', titulacion: 'X', tutorias: '', estudiantiles: 'X',
+                vinculacion: 'X', academia: '', finanzas: '', becas: '' },
+            { campo: 'Matrícula Interna', escolares: '✦', estadias: 'X', titulacion: 'X', tutorias: 'X',
+                estudiantiles: 'X', vinculacion: 'X', academia: 'X', finanzas: '', becas: '' },
+            { campo: 'Fecha de Nacimiento', escolares: '✦', estadias: 'X', titulacion: 'X', tutorias: 'X',
+                estudiantiles: 'X', vinculacion: 'X', academia: '', finanzas: '', becas: '' },
+            { campo: 'Género', escolares: '✦', estadias: 'X', titulacion: 'X', tutorias: 'X', estudiantiles: 'X',
+                vinculacion: 'X', academia: '', finanzas: '', becas: '' },
+            { campo: 'Correo Electrónico Principal', escolares: '✦', estadias: 'X', titulacion: 'X', tutorias: '',
+                estudiantiles: 'X', vinculacion: 'X', academia: '', finanzas: '', becas: '' },
+            { campo: 'Grupo', escolares: '✦', estadias: 'X', titulacion: 'X', tutorias: '', estudiantiles: 'X',
+                vinculacion: 'X', academia: 'X', finanzas: '', becas: '' },
+            { campo: 'Status Actual', escolares: '✦', estadias: 'X', titulacion: 'X', tutorias: '', estudiantiles: 'X',
+                vinculacion: 'X', academia: '', finanzas: '', becas: '' },
+            { campo: 'Cédula TSU', escolares: '', estadias: '', titulacion: '✦', tutorias: '', estudiantiles: '',
+                vinculacion: '', academia: '', finanzas: '', becas: '' },
+            { campo: 'Estatus de Liberación', escolares: 'X', estadias: '✦', titulacion: 'X', tutorias: '',
+                estudiantiles: '', vinculacion: 'X', academia: '', finanzas: '', becas: '' },
+            { campo: 'Empresa Receptora', escolares: 'X', estadias: 'X', titulacion: '', tutorias: '', estudiantiles: '',
+                vinculacion: '✦', academia: '', finanzas: '', becas: '' },
+            { campo: 'Nombre del Proyecto', escolares: 'X', estadias: '✦', titulacion: 'X', tutorias: '',
+                estudiantiles: '', vinculacion: 'X', academia: 'X', finanzas: '', becas: '' },
+            { campo: 'Adeudo Actual', escolares: 'X', estadias: 'X', titulacion: '', tutorias: '', estudiantiles: '',
+                vinculacion: '', academia: '', finanzas: '✦', becas: '' },
+            { campo: 'Beca Académica', escolares: 'X', estadias: '', titulacion: '', tutorias: '', estudiantiles: '',
+                vinculacion: '', academia: '', finanzas: '', becas: '✦' },
+            { campo: '¿Qué deporte practicas?', escolares: '✦', estadias: '', titulacion: '', tutorias: '',
+                estudiantiles: 'X', vinculacion: '', academia: '', finanzas: '', becas: '' },
+            { campo: 'Asistencia a talleres culturales', escolares: '✦', estadias: '', titulacion: '', tutorias: '',
+                estudiantiles: 'X', vinculacion: '', academia: '', finanzas: '', becas: '' },
+            { campo: 'ID de alumnos con discapacidad', escolares: '', estadias: '', titulacion: '', tutorias: '✦',
+                estudiantiles: '', vinculacion: '', academia: '', finanzas: '', becas: '' },
+        ];
+
+        // Datos de validaciones (del reporte)
+        const validaciones = [
+            { depto: 'Servicios Escolares', persona: 'Ing. Ángel López', e1: 'Respondió (22 may)', e2: 'Entrevista',
+                e3: 'Validado ✓ (11 jun)', estatus: 'VALIDADO', obs: 'Datos de escolar validados explícitamente.' },
+            { depto: 'Estadías / Egresados / EEBT', persona: 'Lic. Verónica Flores', e1: 'Respondió (21 may)',
+                e2: 'Entrevista', e3: 'Respondió (15 jun)', estatus: 'VALIDADO',
+                obs: 'Entregó 3 hojas de Google Sheets con campos adicionales: inducción, estadías, egresados y bolsa de trabajo.' },
+            { depto: 'Titulación', persona: 'Lic. Claudia Márquez', e1: 'Respondió (28 may) — incompleto',
+                e2: 'Entrevista', e3: 'Pendiente', estatus: 'PARCIAL',
+                obs: 'Entregó archivo incompleto: "no lo terminé pero para que lo vayan viendo". Sin respuesta en Etapa 3.' },
+            { depto: 'Programa Tutorial / Psicopedagogía / Inclusión', persona: 'Lic. Cindy Torres',
+                e1: 'Respondió (22 may)', e2: 'Entrevista', e3: 'Pendiente', estatus: 'PARCIAL',
+                obs: 'Entregó matriz específica. No confirmó en Etapa 3.' },
+            { depto: 'Servicios Estudiantiles', persona: 'Lic. Ignacio De La Cruz', e1: 'Respondió (22 may) — color celdas',
+                e2: 'Entrevista', e3: 'Pendiente', estatus: 'PARCIAL',
+                obs: 'Envió matriz con identificación por color de celdas. Sin respuesta en Etapa 3.' },
+            { depto: 'Vinculación', persona: 'Lic. Virginia Castro', e1: 'Copia en Etapa 2', e2: 'Entrevista',
+                e3: 'En cadena de correos', estatus: 'PARCIAL',
+                obs: 'Aparece en CC del correo de Estadías. Pendiente de confirmación directa.' },
+            { depto: 'Modelo Dual', persona: 'Lic. Karina Moreno', e1: 'Respondió (11 jun) — nota: falta Dual',
+                e2: 'Entrevista', e3: 'Pendiente', estatus: 'PENDIENTE',
+                obs: 'Señaló: "no aparece la Coordinación Dual". Requiere mapa propio.' },
+            { depto: 'Difusión', persona: 'Lic. Edgar Vázquez', e1: 'Sin respuesta', e2: 'Entrevista',
+                e3: 'Sin respuesta', estatus: 'PENDIENTE',
+                obs: 'No hay evidencia de entrega en ninguna etapa. Departamento clave en Fase 1.' },
+            { depto: 'Dirección de Carrera', persona: 'Ing. José Luis López / Lic. Alma Leticia', e1: 'Sin respuesta',
+                e2: 'Entrevista', e3: 'Sin respuesta', estatus: 'PENDIENTE',
+                obs: 'Dos directores de carrera; sin evidencia de respuesta.' },
+            { depto: 'Becas', persona: 'Ing. Blanca Escobedo', e1: 'Sin respuesta (aunque reenvió a su equipo)',
+                e2: 'Entrevista', e3: 'Sin respuesta', estatus: 'PENDIENTE',
+                obs: 'Reenvió la solicitud a 7 colaboradores, pero no entregó matriz.' },
+            { depto: 'Deportes', persona: 'Lic. Ignacio De La Cruz', e1: 'Sin respuesta específica', e2: 'Entrevista',
+                e3: 'Sin respuesta', estatus: 'PENDIENTE',
+                obs: 'No hay evidencia de entrega de matriz específica de Deportes. Canalizado vía Servicios Estudiantiles.' },
+            { depto: 'Enfermería', persona: 'Enf. Rosa Alicia Luna', e1: 'Respondió (22 may)', e2: 'Entrevista',
+                e3: 'Pendiente', estatus: 'PARCIAL',
+                obs: 'Adjuntó archivo con revisión. Pendiente de confirmación en Etapa 3.' }
+        ];
+
+
+        // ---- RENDER FUNCTIONS ----
+        let activePhaseId = 1;
+
+        function selectPhase(id) {
+            activePhaseId = id;
+            renderPhaseTabs();
+            renderPhaseDetail();
+            document.getElementById('phase-detail-viewer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function renderPhaseTabs() {
+            const container = document.getElementById('phase-tabs');
+            if (!container) return;
+            container.innerHTML = fases.map(f => {
+                const isActive = f.id === activePhaseId;
+                const color = f.color === 'brand' ? 'brand' : f.color;
+                return `<button onclick="selectPhase(${f.id})" class="w-full text-left px-3.5 py-2.5 rounded-xl border transition-all duration-300 flex items-center gap-3 ${isActive ? 'tab-active' : 'border-ui-border bg-white text-ui-textMuted hover:border-brand-200 hover:bg-brand-50/50 hover:text-slate-900'}">
+                            <span class="w-8 h-8 rounded-lg bg-${color}-50 flex items-center justify-center border border-ui-border flex-shrink-0">
+                                <i class="fa-solid ${f.icono} text-${color}-500 text-sm"></i>
+                            </span>
+                            <div class="min-w-0 flex-1">
+                                <span class="text-[9px] font-mono text-${color}-400 uppercase tracking-wider block">Fase ${f.id}</span>
+                                <p class="text-xs font-semibold tracking-tight truncate ${isActive ? 'text-brand-900' : 'text-slate-800'}">${f.titulo}</p>
+                            </div>
+                        </button>`;
+            }).join('');
+        }
+
+        function renderPhaseDetail() {
+            const f = fases.find(fa => fa.id === activePhaseId);
+            const viewer = document.getElementById('phase-detail-viewer');
+            if (!f || !viewer) return;
+            const color = f.color === 'brand' ? 'brand' : f.color;
+            viewer.innerHTML =
+                `<div class="fade-in"><div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-ui-border"><div class="w-12 h-12 rounded-2xl bg-${color}-100 flex items-center justify-center border border-${color}-200 flex-shrink-0"><i class="fa-solid ${f.icono} text-${color}-600 text-xl"></i></div><div><span class="text-[10px] font-mono text-${color}-600 bg-${color}-50 px-2.5 py-1 rounded-full border border-${color}-100">Etapa operativa ${f.id} de 9</span><h2 class="text-lg font-extrabold text-slate-950 mt-1 tracking-tight">${f.titulo}</h2></div></div><p class="text-xs text-ui-textMain mb-5 bg-slate-50 p-4 rounded-xl border border-ui-border shadow-inner leading-relaxed">${f.desc}</p><div class="grid sm:grid-cols-2 gap-4 mb-5"><div class="bg-white p-4 rounded-xl border border-ui-border shadow-sm"><h4 class="text-xs font-bold text-${color}-700 mb-2 flex items-center gap-2"><i class="fa-solid fa-bullseye"></i> Objetivos</h4><ul class="text-[11px] text-ui-textMain list-disc pl-4 space-y-1">${f.objetivos.map(o => `<li>${o}</li>`).join('')}</ul></div><div class="bg-white p-4 rounded-xl border border-ui-border shadow-sm"><h4 class="text-xs font-bold text-amber-700 mb-2 flex items-center gap-2"><i class="fa-solid fa-file-lines"></i> Documentos</h4><ul class="text-[11px] text-ui-textMain list-disc pl-4 space-y-1">${f.documentos.map(d => `<li>${d}</li>`).join('')}</ul></div></div><div class="bg-white p-4 rounded-xl border border-ui-border shadow-sm mb-5"><h4 class="text-xs font-bold text-sky-700 mb-2.5 flex items-center gap-2"><i class="fa-solid fa-gears"></i> Procesos</h4><ul class="text-[11px] text-ui-textMain list-decimal pl-4 space-y-1.5 marker:font-semibold marker:text-sky-600">${f.procesos.map(p => `<li>${p}</li>`).join('')}</ul></div><div class="bg-slate-100 px-3 py-2 rounded-lg border border-ui-border text-[11px] mb-4"><span class="text-[9px] text-ui-textMuted uppercase tracking-wider font-semibold block">Transición</span><p class="text-slate-950 font-medium">${f.transicion}</p></div><div class="flex gap-2 justify-end">${f.id > 1 ? `<button onclick="selectPhase(${f.id-1})" class="text-xs bg-white hover:bg-slate-50 border border-ui-border text-ui-textMain px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-arrow-left mr-1"></i>Anterior</button>` : ''}${f.id < 9 ? `<button onclick="selectPhase(${f.id+1})" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-4 py-1.5 rounded-lg font-semibold transition-all shadow-sm">Siguiente <i class="fa-solid fa-arrow-right ml-1"></i></button>` : ''}</div></div>`;
+        }
+
+        function renderBajas() {
+            const cat = document.getElementById('baja-category-filter')?.value || 'todos';
+            const grid = document.getElementById('bajas-grid');
+            if (!grid) return;
+            const filtered = bajas.filter(b => cat === 'todos' || b.cat === cat);
+            grid.innerHTML = filtered.map(b =>
+                    `<div class="p-3 bg-white border border-ui-border rounded-xl hover:border-red-200 hover:bg-red-50/50 transition-all shadow-sm"><div class="flex justify-between items-center mb-1"><span class="text-[9px] font-mono text-red-600 bg-red-100 px-2 py-0.5 rounded">Causa #${b.id}</span><span class="text-[9px] bg-slate-100 text-ui-textMuted px-2 py-0.5 rounded font-semibold">${b.cat}</span></div><p class="text-xs font-bold text-slate-900 mt-1">${b.text}</p><p class="text-[10px] text-ui-textMuted mt-0.5 leading-tight">${b.desc}</p></div>`
+                )
+                .join('');
+        }
+
+        function showModality(key) {
+            const m = modalities[key];
+            const info = document.getElementById('modality-info');
+            if (!m || !info) return;
+            info.innerHTML =
+                `<p class="font-bold text-slate-950 text-xs">${m.title}</p><p class="text-[11px] text-ui-textMuted mt-1 leading-relaxed">${m.desc}</p><div class="flex flex-wrap gap-2 mt-2 text-[10px]"><span class="bg-brand-100 text-brand-800 px-2 py-0.5 rounded font-medium">TSU: ${m.tsu}</span><span class="bg-violet-100 text-violet-800 px-2 py-0.5 rounded font-medium">Lic./Ing.: ${m.ing}</span><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">Complejidad: ${m.complejidad}</span></div>`;
+            document.querySelectorAll('.mod-btn').forEach(btn => btn.classList.remove('border-brand-400', 'bg-brand-100'));
+            document.querySelector(`.mod-btn[data-mod="${key}"]`)?.classList.add('border-brand-400', 'bg-brand-100');
+        }
+
+        function renderHallazgos() {
+            const grid = document.getElementById('hallazgos-grid');
+            if (!grid) return;
+            const colorMap = { red: 'bg-red-50 border-red-200 text-red-700', orange: 'bg-orange-50 border-orange-200 text-orange-700',
+                amber: 'bg-amber-50 border-amber-200 text-amber-700', yellow: 'bg-yellow-50 border-yellow-200 text-yellow-700',
+                slate: 'bg-slate-50 border-slate-200 text-slate-700' };
+            grid.innerHTML = hallazgos.map(h =>
+                    `<div class="p-4 rounded-xl border ${colorMap[h.color]} hover:shadow-md transition-all"><div class="flex items-start gap-2.5 mb-2"><span class="w-7 h-7 rounded-lg bg-white/70 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid ${h.icono} text-xs"></i></span><div><span class="text-[9px] font-mono uppercase tracking-wider block font-bold">Hallazgo ${h.num}</span><p class="text-xs font-bold text-slate-900 leading-tight mt-0.5">${h.titulo}</p></div></div><p class="text-[11px] text-ui-textMuted leading-relaxed">${h.desc}</p></div>`
+                )
+                .join('');
+        }
+
+        function renderCamposVerdad() {
+            const grid = document.getElementById('campos-verdad-grid');
+            if (!grid) return;
+            grid.innerHTML = camposVerdad.map((c, i) =>
+                    `<div class="flex items-center gap-2 p-2 bg-violet-50 border border-violet-100 rounded-xl hover:bg-violet-100 transition-all"><span class="w-5 h-5 rounded-full bg-violet-500 text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0">${i+1}</span><span class="text-[10px] font-semibold text-violet-900 leading-tight">${c}</span></div>`
+                )
+                .join('');
+        }
+
+        function renderDepartamentos() {
+            const grid = document.getElementById('departamentos-grid');
+            if (!grid) return;
+            grid.innerHTML = departamentos.map(d =>
+                    `<div class="p-4 rounded-xl border bg-slate-50 border-slate-200 hover:shadow-md transition-all"><div class="flex items-center gap-2.5 mb-2.5 pb-2 border-b border-white/60"><i class="fa-solid ${d.icono} text-brand-600 text-base w-5 text-center"></i><div><p class="text-xs font-bold text-slate-900">${d.nombre}</p><span class="text-[9px] font-mono text-brand-600 font-semibold">Fases ${d.fases}</span></div></div><div class="space-y-1.5 text-[10px] leading-relaxed"><p class="text-slate-700"><strong>Campos clave:</strong> ${d.campos}</p><p class="text-slate-500"><strong>Depende de:</strong> ${d.depende}</p><p class="text-slate-500"><strong>Entrega a:</strong> ${d.entrega}</p></div><p class="mt-2.5 pt-2 border-t border-white/50 text-brand-700 font-semibold text-[10px]">${d.nota}</p></div>`
+                )
+                .join('');
+        }
+        function renderValidaciones() {
+            const tbody = document.getElementById('validaciones-body');
+            if (!tbody) return;
+            const statusClass = { VALIDADO: 'status-validado', PARCIAL: 'status-parcial', PENDIENTE: 'status-pendiente' };
+            tbody.innerHTML = validaciones.map(r =>
+                    `<tr class="border-b border-ui-border hover:bg-slate-50/50">
+                        <td class="p-2 text-[11px] font-medium text-slate-800">${r.depto}</td>
+                        <td class="p-2 text-[11px] text-slate-600">${r.persona}</td>
+                        <td class="p-2 text-center text-[10px] text-slate-600">${r.e1}</td>
+                        <td class="p-2 text-center text-[10px] text-slate-600">${r.e2}</td>
+                        <td class="p-2 text-center text-[10px] text-slate-600">${r.e3}</td>
+                        <td class="p-2 text-center"><span class="status-badge ${statusClass[r.estatus]}">${r.estatus}</span></td>
+                        <td class="p-2 text-[10px] text-slate-500 max-w-[200px]">${r.obs}</td>
+                    </tr>`
+                )
+                .join('');
+        }
+
+        function initFieldsModule() {
+            const groups = new Map();
+            for (const item of fieldsData) { if (!groups.has(item.owner)) groups.set(item.owner, []);
+                groups.get(item.owner).push(item.field); }
+            document.getElementById('total-depts').innerText = groups.size;
+            let maxCount = 0,
+                maxDeptName = '',
+                exclusiveTotal = 0;
+            for (let [dept, fields] of groups.entries()) { if (fields.length > maxCount) { maxCount = fields.length;
+                    maxDeptName = dept; } if (fields.length === 1) exclusiveTotal++; }
+            document.getElementById('max-dept').innerHTML =
+                `${maxDeptName}<span class="text-[10px] block font-normal text-slate-500">${maxCount} campos</span>`;
+            document.getElementById('exclusive-count').innerText = exclusiveTotal;
+            const container = document.getElementById('accordion-container');
+            if (!container) return;
+            container.innerHTML = '';
+            let idx = 0;
+            for (let [dept, fields] of groups.entries()) {
+                const deptId = `accordion-${idx}`;
+                const card = document.createElement('div');
+                card.className = 'border-b border-ui-border last:border-b-0';
+                card.innerHTML =
+                    `<div class="accordion-header px-6 py-4 flex justify-between items-center hover:bg-slate-50/80 transition-all" data-target="${deptId}"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center border border-brand-200"><i class="fa-solid fa-building text-brand-700 text-sm"></i></div><div><h3 class="font-bold text-slate-800">${dept}</h3><span class="text-[10px] font-mono text-slate-500">${fields.length} campos registrados</span></div></div><i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-200 chev-icon"></i></div><div id="${deptId}" class="accordion-content px-6 pb-4"><div class="flex flex-wrap gap-2 pt-2 border-t border-dashed border-ui-border mt-1"></div></div>`;
+                container.appendChild(card);
+                const contentDiv = card.querySelector(`#${deptId} .flex.flex-wrap`);
+                fields.sort().forEach(f => { const tag = document.createElement('span');
+                    tag.className = 'field-tag';
+                    tag.innerHTML = `<i class="fa-regular fa-circle-check text-[10px] mr-1 text-slate-400"></i>${f}`;
+                    contentDiv.appendChild(tag); });
+                const header = card.querySelector('.accordion-header');
+                const targetDiv = card.querySelector(`#${deptId}`);
+                const chevron = header.querySelector('.chev-icon');
+                let isOpen = false;
+                header.addEventListener('click', () => { if (!isOpen) { targetDiv.classList.add('open');
+                        targetDiv.style.maxHeight = targetDiv.scrollHeight + 'px';
+                        chevron.style.transform = 'rotate(180deg)'; } else { targetDiv.classList.remove('open');
+                        targetDiv.style.maxHeight = '0px';
+                        chevron.style.transform = 'rotate(0deg)'; } isOpen = !isOpen; });
+                idx++;
+            }
+            container.firstChild?.querySelector('.accordion-header')?.click();
+        }
+        function renderMatrizUso() {
+            const tbody = document.getElementById('matriz-uso-body');
+            if (!tbody) return;
+            tbody.innerHTML = matrizUso.map(row =>
+                    `<tr class="border-b border-ui-border hover:bg-slate-50/50">
+                        <td class="p-2 font-medium text-slate-800">${row.campo}</td>
+                        <td class="p-2 text-center">${row.escolares}</td>
+                        <td class="p-2 text-center">${row.estadias}</td>
+                        <td class="p-2 text-center">${row.titulacion}</td>
+                        <td class="p-2 text-center">${row.tutorias}</td>
+                        <td class="p-2 text-center">${row.estudiantiles}</td>
+                        <td class="p-2 text-center">${row.vinculacion}</td>
+                        <td class="p-2 text-center">${row.academia}</td>
+                        <td class="p-2 text-center">${row.finanzas}</td>
+                        <td class="p-2 text-center">${row.becas}</td>
+                    </tr>`
+                )
+                .join('');
+        }
+
+        // ---- ONLOAD ----
+        window.onload = () => {
+            renderPhaseTabs();
+            renderPhaseDetail();
+            renderBajas();
+            renderHallazgos();
+            renderCamposVerdad();
+            renderDepartamentos();
+            renderValidaciones();
+            renderMatrizUso();
+            showModality('TRADICIONAL');
+            initFieldsModule();
+        };
+        window.selectPhase = selectPhase;
+        window.showModality = showModality;
+        window.renderBajas = renderBajas;
+    </script>
+</body>
+</html>  
